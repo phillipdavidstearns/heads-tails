@@ -7,6 +7,7 @@ import time
 
 t0 = 0.0
 
+
 def setLightOn():
 	print("Light is ON @: "+str(time.time() - t0))
 
