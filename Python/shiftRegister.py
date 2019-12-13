@@ -4,8 +4,14 @@ import time
 import signal
 import RPi.GPIO as GPIO # using RPi.GPIO
 
+STR = 17
+DATA = 27
+CLK = 22
+
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(4, GPIO.OUT) # make pin into an output
+GPIO.setup(STR, GPIO.OUT) # make pin into an output
+GPIO.setup(DATA, GPIO.OUT) # make pin into an output
+GPIO.setup(CLK, GPIO.OUT) # make pin into an output
 
 print("Raspi GPIO Hello World")
 print("Ctrl C to quit")
@@ -23,3 +29,5 @@ while True:
 	GPIO.output(4,1)
 	time.sleep(0.30)
 
+def regOutput():
+	GPIO.output(CLK,
