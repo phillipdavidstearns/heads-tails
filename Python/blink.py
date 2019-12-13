@@ -19,7 +19,7 @@ signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
 while True:
 	GPIO.output(4,0)
-	time.sleep(0.30)
+	time.sleep(1.30)
 	GPIO.output(4,1)
-	time.sleep(0.30)
+	time.sleep(1.30)
 
