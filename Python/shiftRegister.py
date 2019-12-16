@@ -8,42 +8,59 @@ import random
 STR = 17
 DATA = 27
 CLK = 22
-PULSE = 0.0
+CHANNELS = 32; # number of output channels
+FPS = 30; # refresh rate = frames per second
+counter = 0
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(STR, GPIO.OUT) # make pin into an output
-GPIO.setup(DATA, GPIO.OUT) # make pin into an output
-GPIO.setup(CLK, GPIO.OUT) # make pin into an output
+def pinSetup():
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(STR, GPIO.OUT) # make pin into an output
+	GPIO.setup(DATA, GPIO.OUT) # make pin into an output
+	GPIO.setup(CLK, GPIO.OUT) # make pin into an output
 
-print("Raspi GPIO Hello World")
-print("Ctrl C to quit")
+def regClear():
+	GPIO.output(DATA, 0)
+	for i in range(CHANNELS):
+		GPIO.output(CLK, 0)
+		GPIO.output(CLK, 1)
+	GPIO.output(CLK, 0)
+	GPIO.output(STR, 1)
+	GPIO.output(STR, 0)
+
+def regOutput(value):
+	for i in range(CHANNELS):
+		GPIO.output(CLK, 0)
+		GPIO.output(DATA, value >> ((CHANNELS - i - 1) % 8)  & 1)
+		GPIO.output(CLK, 1)
+	GPIO.output(CLK, 0)
+	GPIO.output(STR, 1)
+	GPIO.output(STR, 0)
+	GPIO.output(DATA, 0)
 
 def keyboardInterruptHandler(signal, frame):
+	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
-	GPIO.cleanup()
+	regClear()
+	# custom GPIO cleanup
+	GPIO.setup(STR, GPIO.IN)
+	GPIO.setup(DATA, GPIO.IN)
+	GPIO.setup(CLK, GPIO.IN)
 	exit(0)
 
-signal.signal(signal.SIGINT, keyboardInterruptHandler)
-
 def main():
+
+	print("Raspi GPIO ShiftRegister Test")
+	print("Ctrl C to quit")
+
+	global counter
+
+	pinSetup()
+	regClear()
+
 	while True:
-		regOutput()
-		time.sleep(1/30.0)
+		regOutput(counter)
+		counter += 1
+		time.sleep(1/FPS)
 
-def regOutput():
-	for i in range(8):
-		GPIO.output(CLK,0)
-		time.sleep(PULSE)
-		GPIO.output(DATA, random.randint(0,1))
-		time.sleep(PULSE)
-		GPIO.output(CLK,1)
-		time.sleep(PULSE)
-	GPIO.output(CLK,0)
-	time.sleep(PULSE)
-	GPIO.output(STR,1)
-	time.sleep(PULSE)
-	GPIO.output(STR,0)
-	time.sleep(PULSE)
-	GPIO.output(DATA,0)
-
+signal.signal(signal.SIGINT, keyboardInterruptHandler)
 main()
