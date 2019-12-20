@@ -42,7 +42,7 @@ def keyboardInterruptHandler(signal, frame):
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	regClear()
 	# custom GPIO cleanup
-	GPIO.setup(STR, GPIO.IN)
+	GPIO.setup(STR, GPIO.I)
 	GPIO.setup(DATA, GPIO.IN)
 	GPIO.setup(CLK, GPIO.IN)
 	exit(0)
