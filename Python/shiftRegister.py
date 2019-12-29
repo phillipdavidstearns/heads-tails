@@ -4,19 +4,30 @@ import time
 import signal
 import RPi.GPIO as GPIO # using RPi.GPIO
 import random
+import math
+from math import sin
 
+# GPIO pin numbers
 STR = 17
 DATA = 27
 CLK = 22
-CHANNELS = 32; # number of output channels
-FPS = 30; # refresh rate = frames per second
-counter = 0
+PWM = 12
 
-def pinSetup():
-	GPIO.setmode(GPIO.BCM)
-	GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
-	GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
-	GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+FREQUENCY = 400 # frequency of PWM
+CHANNELS = 32; # number of output channels
+FPS = 30; # main refresh rate = frames per second
+counter = 0
+angle = 0.0
+angleInc = 0.001
+value = 0b11111111111111111111111111111111 # testing purposes
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+GPIO.setup(PWM, GPIO.OUT)
+headLights = GPIO.PWM(PWM, FREQUENCY)
+headLights.start(0)
 
 def regClear():
 	GPIO.output(DATA, 0)
@@ -41,10 +52,7 @@ def keyboardInterruptHandler(signal, frame):
 	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	regClear()
-	# custom GPIO cleanup
-	GPIO.setup(STR, GPIO.IN)
-	GPIO.setup(DATA, GPIO.IN)
-	GPIO.setup(CLK, GPIO.IN)
+	GPIO.cleanup()
 	exit(0)
 
 def main():
@@ -53,15 +61,23 @@ def main():
 	print("Ctrl C to quit")
 
 	global counter
+	global value
+	global angle
 
-	pinSetup()
 	regClear()
 
 	while True:
-		value = 1 << ( counter % CHANNELS )
-		regOutput(value)
+#		value = 1 << ( counter % CHANNELS )
+		for i in range( CHANNELS ):
+			if ( counter % ( i + 10 ) == 0 ):
+				value ^= 1 << i
+		regOutput( value )
+		brightness = pow( sin( 2 * math.pi * angle ), 2 )
+		headLights.ChangeDutyCycle( 100.0 * brightness )
+		angle += angleInc
 		counter += 1
-		time.sleep(1/FPS)
+		time.sleep( 1 / FPS )
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
+
 main()
