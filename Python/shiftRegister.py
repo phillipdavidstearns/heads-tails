@@ -72,8 +72,11 @@ def main():
 			if ( counter % ( i + 10 ) == 0 ):
 				value ^= 1 << i
 		regOutput( value )
-		brightness = pow( sin( 2 * math.pi * angle ), 2 )
-		headLights.ChangeDutyCycle( 100.0 * brightness )
+		# brightness = pow( sin( 2 * math.pi * angle ), 2 )
+		# headLights.ChangeDutyCycle( 100.0 * brightness )
+		if (counter % 300 > 150):
+			headLights.ChangeDutyCycle( 100.0 )
+		headLights.ChangeDutyCycle( 10.0 )
 		angle += angleInc
 		counter += 1
 		time.sleep( 1 / FPS )
