@@ -11,7 +11,7 @@ angle = 0.0
 angleInc = 0.01
 
 # os.system('sudo /usr/bin/pigpiod')
-subprocess.call('sudo /usr/bin/pigpiod')
+subprocess.call('/bin/bash', '-c','sudo /usr/bin/pigpiod')
 
 PWM = pigpio.pi()
 
