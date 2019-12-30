@@ -26,5 +26,4 @@ def main():
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
-setup()
 main()
