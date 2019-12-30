@@ -25,7 +25,6 @@ def main():
 		PWM.hardware_PWM(12, 400, int(1000000 * pow(math.sin(2*math.pi*angle),2)))
 		time.sleep(1/30)
 		angle += angleInc
-		print(str(angle))
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
