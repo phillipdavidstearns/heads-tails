@@ -5,11 +5,13 @@ import os
 import signal
 import time
 import math
+import subprocess
 
 angle = 0.0
 angleInc = 0.01
 
-os.system('sudo /usr/bin/pigpiod')
+# os.system('sudo /usr/bin/pigpiod')
+subprocess.call('sudo pigpiod')
 
 PWM = pigpio.pi()
 
@@ -17,7 +19,8 @@ def keyboardInterruptHandler(signal, frame):
 	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	PWM.hardware_PWM(12, 400, 0)
-	os.system('killall pigpiod')
+	os.system('sudo killall pigpiod')
+	subprocess.call('sudo killall pigpiod')
 	exit(0)
 
 def main():
