@@ -29,7 +29,6 @@ angleInc = 0.01
 
 PWM = pigpio.pi()
 
-
 def regClear():
 	GPIO.output(DATA, 0)
 	for i in range(CHANNELS):
@@ -60,7 +59,6 @@ def keyboardInterruptHandler(signal, frame):
 
 def main():
 
-	print("Raspi GPIO ShiftRegister Test")
 	print("Ctrl C to quit")
 
 	global counter
