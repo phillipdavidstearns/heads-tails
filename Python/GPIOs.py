@@ -76,12 +76,12 @@ def main():
 				value ^= 1 << i
 		regOutput( value )
 
-		# if (counter % 300 == 150):
-		# 	headLights.ChangeDutyCycle( 100.0 )
-		# elif (counter % 300 == 0):
-		# 	headLights.ChangeDutyCycle( 10.0 )
+		if (counter % 300 == 150):
+			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
+		elif (counter % 300 == 0):
+			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
 
-		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(1000000 * pow(math.sin(2*math.pi*angle),2)))
+		# PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(1000000 * pow(math.sin(2*math.pi*angle),2)))
 
 		angle += angleInc
 
