@@ -25,7 +25,7 @@ def keyboardInterruptHandler(signal, frame):
 
 def main():
 	while True:
-		PWM.hardware_PWM(12, 400, int( 1000000 * pow( math.sin( 2*math.pi*angle),2)))
+		PWM.hardware_PWM(12, 400, 0)
 		time.sleep(1/30)
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
