@@ -20,7 +20,7 @@ def keyboardInterruptHandler(signal, frame):
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	PWM.hardware_PWM(12, 400, 0)
 	os.system('sudo killall pigpiod')
-	subprocess.call('sudo killall pigpiod')
+	subprocess.call(['/bin/bash', '-c', 'sudo killall pigpiod'])
 	exit(0)
 
 def main():
