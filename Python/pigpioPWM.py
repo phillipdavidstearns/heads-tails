@@ -9,8 +9,10 @@ angle = 0.0
 angleInc = 0.01
 
 PWM = pigpio.pi()
-if (PWM.connected()):
+
+if not PWM.connected:
 	print("Did you start pigpiod?")
+	exit()
 
 def keyboardInterruptHandler(signal, frame):
 	print()
