@@ -72,7 +72,7 @@ def displaySynch():
 def keyboardInterruptHandler(signal, frame):
 	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
-	exit(0)
+	# exit(0)
 
 def main():
 
