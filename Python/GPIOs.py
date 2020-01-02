@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-import pigpio
+import pigpio # using this for hardware PWM, software is not stable!!!
 import signal
 import time
 import math
 import signal
-import RPi.GPIO as GPIO # using RPi.GPIO
+import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 import random
 
 # GPIO pin numbers
@@ -19,15 +19,12 @@ FPS = 30; # main refresh rate = frames per second
 counter = 0
 value = 0b11111111111111111111111111111111 # testing purposes
 
+PWM = pigpio.pi()
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
-
-angle = 0.0
-angleInc = 0.01
-
-PWM = pigpio.pi()
 
 def regClear():
 	GPIO.output(DATA, 0)
@@ -63,7 +60,6 @@ def main():
 
 	global counter
 	global value
-	global angle
 
 	regClear()
 
@@ -78,10 +74,6 @@ def main():
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
 		elif (counter % 300 == 0):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
-
-		# PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(1000000 * pow(math.sin(2*math.pi*angle),2)))
-
-		angle += angleInc
 
 		counter += 1
 		time.sleep( 1 / FPS )

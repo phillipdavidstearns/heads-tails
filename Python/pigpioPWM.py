@@ -8,8 +8,6 @@ import math
 angle = 0.0
 angleInc = 0.01
 
-
-
 PWM = pigpio.pi()
 
 def keyboardInterruptHandler(signal, frame):
