@@ -8,8 +8,11 @@ import math
 angle = 0.0
 angleInc = 0.01
 
-PWM = pigpio.pi()
-
+try:
+	PWM = pigpio.pi()
+except:
+	print("Is pigpiod running?")
+	
 def keyboardInterruptHandler(signal, frame):
 	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
