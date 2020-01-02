@@ -24,7 +24,11 @@ def keyboardInterruptHandler(signal, frame):
 def main():
 	global angle
 	while True:
-		PWM.hardware_PWM(12, 400, int(1000000 * pow(math.sin(2*math.pi*angle),2)))
+		try:
+			PWM.hardware_PWM(12, 400, int(1000000 * pow(math.sin(2*math.pi*angle),2)))
+		except:
+			print("Is pigpiod running?")
+			exit()
 		time.sleep(1/30)
 		angle += angleInc
 
