@@ -12,6 +12,7 @@ try:
 	PWM = pigpio.pi()
 except:
 	print("Is pigpiod running?")
+	exit()
 	
 def keyboardInterruptHandler(signal, frame):
 	print()
