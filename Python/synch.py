@@ -1,17 +1,19 @@
 #!/usr/bin/python3
 
 
-from time import * # for basic timing modules like sleep() and time()
+import time # for basic timing modules like sleep() and time()
 import signal
 import subprocess
 import datetime
+
+DEBUG = True
 
 tzOffset = -5 * 3600
 dotOffset = 17 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 drift = 0
 
 DOTTime = 0
-tc = time()
+tc = time.time()
 tp = 0.0
 dt = 1.0
 cycle = 90.0
@@ -44,7 +46,7 @@ def dotSeconds():
 
 def localSeconds():
 	# capture localtime
-	time_local = localtime()
+	time_local = time.localtime()
 	# convert to seconds
 	local_seconds = int(time_local[3])*3600 + int(time_local[4])*60 + int(time_local[5])
 	return local_seconds
@@ -53,7 +55,8 @@ def timeDrift():
 	return dotSeconds() - localSeconds()
 
 def runTheCode():
-	displaySynch()
+	if DEBUG:
+		displaySynch()
 
 def displaySynch():
 	cycle = (localSeconds() + dotOffset + drift) % 90
@@ -86,12 +89,12 @@ def main():
 	print("Local clock is off by: " + str(drift))
 
 	while True:
-		tc = time()
+		tc = time.time()
 		if (tc - tp >= dt):
 			tp = tc
 			runTheCode()
 
-		sleep(0.1)
+		time.sleep(0.1)
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
