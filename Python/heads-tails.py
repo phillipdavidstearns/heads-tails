@@ -169,7 +169,7 @@ def main():
 
 	while True:
 		cycleTime = int(time.time()) % 90 
-		print("----| " + str(cycleTime)+str(channelStates)+", active timers: " + str(timer_count),end='\r')
+		print("----| " + str(cycleTime)+str(channelStates)+", active timers: " + str(timer_count))
 		if( cycleTime == 0 and cycleTime != last_cycle ):
 			print("I should trigger only once!")
 			for i in range(CHANNELS):
