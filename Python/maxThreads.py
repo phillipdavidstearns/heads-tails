@@ -7,13 +7,13 @@ count = 0
 def callback(number):
 	global count
 	count -= 1
-	print(" [-] Thread finished: "+str(number), end='\r')
+	print(" [-] Thread finished: "+str(number))
 
 def main():
 	global count
 	while True:
 		count+=1
 		Timer(120, callback,[count]).start()
-		print(" [+] Threads running: "+str(count), end='\r')
+		print(" [+] Threads running: "+str(count))
 
 main()
