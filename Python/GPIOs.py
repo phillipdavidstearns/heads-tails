@@ -19,7 +19,10 @@ FPS = 30; # main refresh rate = frames per second
 counter = 0
 value = 0b11111111111111111111111111111111 # testing purposes
 
+
 PWM = pigpio.pi()
+if not PWM.connected:
+	exit()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output

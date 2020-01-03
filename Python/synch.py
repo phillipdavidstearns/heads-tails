@@ -5,11 +5,12 @@ import time # for basic timing modules like sleep() and time()
 import signal
 import subprocess
 import datetime
+import os
 
 DEBUG = True
 
 tzOffset = -5 * 3600
-dotOffset = 17 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
+dotOffset = 14 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 drift = 0
 
 DOTTime = 0
@@ -60,19 +61,19 @@ def runTheCode():
 
 def displaySynch():
 	cycle = (localSeconds() + dotOffset + drift) % 90
-	print(cycle)
+	# print(cycle)
 	if(cycle == 0):
 		print("Green")
 	if(cycle == 34):
 		print("Amber")
-	if(cycle == 36):
+	if(cycle == 37):
 		print("Red")
 
 
 def keyboardInterruptHandler(signal, frame):
 	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
-	# exit(0)
+	os._exit(0)
 
 def main():
 
@@ -94,7 +95,7 @@ def main():
 			tp = tc
 			runTheCode()
 
-		time.sleep(0.1)
+		time.sleep(0.01)
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
