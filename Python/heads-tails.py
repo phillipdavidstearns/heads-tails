@@ -29,6 +29,7 @@ PWM = pigpio.pi()
 if not PWM.connected:
 	exit()
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
@@ -60,6 +61,7 @@ update_score=False
 last_cycle=0
 CHANNELS=32
 channelStates=[]
+timer_count = 0
 
 for i in range(CHANNELS):
 	channelStates.append(0)
@@ -74,11 +76,15 @@ cmd = curl+" > "+temp_filename
 def setLightOn(channel):
 	global channelStates
 	channelStates[channel] = 1
+	global timer_count
+	timer_count -= 1
 
 
 def setLightOff(channel):
 	global channelStates
 	channelStates[channel] = 0
+	global timer_count
+	timer_count -= 1
 
 def updateCSV():
 	update = -1
@@ -140,8 +146,10 @@ def createTimers(behavior, whichChannel=0):
 	return timers
 
 def initiateTimers(timers):
+	global timer_count
 	for t in timers:
 		t.start()
+		timer_count += 1
 
 def keyboardInterruptHandler(signal, frame):
 	print()
@@ -153,6 +161,7 @@ def keyboardInterruptHandler(signal, frame):
 	os._exit(0)
 
 def main():
+	
 	regClear()
 	if update_score: updateCSV()
 
@@ -160,9 +169,9 @@ def main():
 
 	while True:
 		cycleTime = int(time.time()) % 90 
-		print("----| " + str(cycleTime)+str(channelStates),end='\r')
-
+		print("----| " + str(cycleTime)+str(channelStates)+", active timers: " + str(timer_count),end='\r')
 		if( cycleTime == 0 and cycleTime != last_cycle ):
+			print("I should trigger only once!")
 			for i in range(CHANNELS):
 				index = random.randint(0,len(behaviors)-1)
 				behavior = behaviors[ index ]
