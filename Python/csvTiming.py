@@ -21,6 +21,7 @@ channelStates=[]
 
 for i in range(CHANNELS):
 	channelStates.append(0)
+	
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 curl = 'curl --connect-timeout 5 -m 10 -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"'
 temp_filename = "\"" + script_dir + "/data/score_temp.csv" +  "\""
