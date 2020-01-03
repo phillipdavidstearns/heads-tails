@@ -13,7 +13,7 @@ def main():
 	global count
 	while True:
 		count+=1
-		Timer(120, callback,[count])
+		Timer(120, callback,[count]).start()
 		print(" [+] Threads running: "+str(count), end='\r')
 
 main()
