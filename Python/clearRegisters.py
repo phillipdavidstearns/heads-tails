@@ -11,6 +11,7 @@ CLK = 22
 CHANNELS = 32; # number of output channels
 
 def setup():
+	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 	GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
