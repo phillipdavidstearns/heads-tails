@@ -43,10 +43,10 @@ def regClear():
 	GPIO.output(STR, 1)
 	GPIO.output(STR, 0)
 
-def regOutput(value):
+def regOutput(channels):
 	for i in range(CHANNELS):
 		GPIO.output(CLK, 0)
-		GPIO.output(DATA, value >> (CHANNELS - i - 1)  & 1)
+		GPIO.output(DATA, channels[CHANNELS - i - 1])
 		GPIO.output(CLK, 1)
 	GPIO.output(CLK, 0)
 	GPIO.output(STR, 1)
@@ -160,13 +160,14 @@ def main():
 	while True:
 		cycleTime = int(time.time()) % 90 
 		print("----| " + str(cycleTime)+str(channelStates),end='\r')
-		
-		if( cycleTime == 0 && cycleTime != last_cycle ):
+
+		if( cycleTime == 0 and cycleTime != last_cycle ):
 			for i in range(CHANNELS):
 				index = random.randint(0,len(behaviors)-1)
 				behavior = behaviors[ index ]
 				initiateTimers(createTimers(behavior, i))
 		last_cycle = cycleTime
+		regOutput(channelStates)
 		time.sleep(1/FPS)
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
