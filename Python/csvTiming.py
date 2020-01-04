@@ -28,9 +28,6 @@ temp_filename = "\"" + script_dir + "/data/score_temp.csv" +  "\""
 filename = "\"" + script_dir + "/data/score.csv" +  "\""
 cmd = curl+" > "+temp_filename
 
-print(script_dir)
-exit()
-
 def setLightOn(channel):
 	global channelStates
 	channelStates[channel] = 1
