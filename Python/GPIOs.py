@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import pigpio # using this for hardware PWM, software is not stable!!!
+# import pigpio # using this for hardware PWM, software is not stable!!!
 import signal
 import time
 import math
@@ -12,17 +12,17 @@ import random
 STR = 17
 DATA = 27
 CLK = 22
-PWM_PIN = 12
-PWM_FREQ = 400 # frequency of PWM
+# PWM_PIN = 12
+# PWM_FREQ = 400 # frequency of PWM
 CHANNELS = 32; # number of output channels
 FPS = 30; # main refresh rate = frames per second
 counter = 0
 value = 0b11111111111111111111111111111111 # testing purposes
 
 
-PWM = pigpio.pi()
-if not PWM.connected:
-	exit()
+# PWM = pigpio.pi()
+# if not PWM.connected:
+# 	exit()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
@@ -53,8 +53,8 @@ def keyboardInterruptHandler(signal, frame):
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	regClear()
 	GPIO.cleanup()
-	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 0)
-	PWM.stop()
+	# PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 0)
+	# PWM.stop()
 	exit(0)
 
 def main():
@@ -73,10 +73,10 @@ def main():
 				value ^= 1 << i
 		regOutput( value )
 
-		if (counter % 300 == 150):
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
-		elif (counter % 300 == 0):
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
+		# if (counter % 300 == 150):
+		# 	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
+		# elif (counter % 300 == 0):
+		# 	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
 
 		counter += 1
 		time.sleep( 1 / FPS )
