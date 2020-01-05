@@ -78,7 +78,7 @@ def main():
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
 
 		counter += 1
-		time.sleep( 1 / FPS )
+		time.sleep(1)
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
