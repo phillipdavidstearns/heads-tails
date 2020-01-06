@@ -28,6 +28,8 @@ def keyboardInterruptHandler(signal, frame):
 
 def main():
 	global start_time
+	global power_line_time
+	global init
 	if init:
 		start_time=time.time()
 		power_line_time=time.time()
