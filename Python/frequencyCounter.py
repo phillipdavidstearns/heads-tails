@@ -17,8 +17,7 @@ def incrementCounter():
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(INPUT, GPIO.IN) # make pin into an input
-GPIO.add_event_detect(INPUT, GPIO.RISING, incrementCounter)
-GPIO.add_event_detect(INPUT, GPIO.FALLING, incrementCounter)
+GPIO.add_event_detect(INPUT, GPIO.BOTH, incrementCounter)
 
 def keyboardInterruptHandler(signal, frame):
 	print()
