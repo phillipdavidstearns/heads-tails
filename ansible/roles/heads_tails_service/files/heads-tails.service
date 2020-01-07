@@ -1,0 +1,16 @@
+[Unit]
+Description=heads-tails main python script
+After=network.target wg_setup@wg0.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/systemctl stop heads-tails-test
+ExecStartPre=/usr/bin/pigpiod
+ExecStart=/usr/bin/python3 /home/heads-tails/heads-tails/Python/heads-tails.py
+EcecStopPost=/usr/bin/python3 /home/heads-tails/heads-tails/clearRegisters.py
+ExecStopPost=/usr/bin/killall pigpiod
+Restart=on-success
+RestartPreventExitStatus=SIGTERM SIGKILL
+
+[Install]
+WantedBy=multi-user.target

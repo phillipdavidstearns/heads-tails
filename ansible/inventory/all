@@ -1,0 +1,7 @@
+[heads-tails]
+
+heads-tails-01 ansible_host=10.42.0.101
+heads-tails-02 ansible_host=10.42.0.102
+
+[heads-tails:vars]
+ansible_user=heads-tails

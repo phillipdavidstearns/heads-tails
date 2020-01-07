@@ -1,0 +1,6 @@
+---
+- hosts: heads-tails
+  become: yes
+  roles:
+    - { role: heads_tails_test_enable }
+    - { role: heads_tails_disable }
