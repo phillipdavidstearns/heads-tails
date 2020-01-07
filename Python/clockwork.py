@@ -6,13 +6,13 @@
 # curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"
 # (credit - https://stackoverflow.com/questions/24255472/download-export-public-google-spreadsheet-as-tsv-from-command-line)
 
-import updates
-import csv
+from fileHandlers import *
 import random
 import time
 import random
 import signal
 import subprocess
+import os
 
 CHANNELS=32
 
@@ -21,7 +21,7 @@ headlightState=0 # 0 for dim 1 for bright
 lastHeadlightState=0 # 0 for dim 1 for bright
 
 tzOffset = -5 * 3600
-dotOffset = 14 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
+dotOffset = 12 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 drift = 0
 deviation = 0
 
@@ -66,8 +66,8 @@ def adjustedTime():
 	return localSeconds() + dotOffset + drift + deviation
 
 def displaySynch(time):
-	cycle = time  % 90
-	# print(cycle)
+	cycle = time % 90
+	print("cycle: "+str(cycle)+", adjusted time: "+str(time))
 	if(cycle == 0):
 		print("Green")
 	if(cycle == 34):
@@ -84,7 +84,7 @@ def main():
 	updateDeviation()
 
 	#-----headlight stuff
-	headlights=loadHeadlightTimes()
+	headlights=loadHeadlights()
 	date=str(time.localtime()[1])+'/'+str(time.localtime()[2])
 
 	try:
