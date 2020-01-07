@@ -212,7 +212,7 @@ def main():
 		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
 
-		cycleTime = adjustedTime % 90
+		cycleTime = tempTime % 90
 		print("--->"+str(cycleTime)+str(channelStates),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			startTime = time.time()
