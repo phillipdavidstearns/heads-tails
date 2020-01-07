@@ -27,7 +27,6 @@ dotOffset = 12 # based on the start of Phase B @ 51 seconds in the cycle startin
 drift = 0
 deviation = 0
 
-
 def dotSeconds():
 	# resource on synching raspberry pi https://raspberrytips.com/time-sync-raspberry-pi/
 	# the python3.7 time module https://docs.python.org/3.7/library/time.html
@@ -206,13 +205,12 @@ def main():
 
 	while True:
 
-		adjustedTime=adjustedTime()
+		time=adjustedTime()
 
-		if ( adjustedTime >= headlightTimes[0] and  adjustedTime < headlightTimes[1] ):
+		if ( time >= headlightTimes[0] and  time < headlightTimes[1] ):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
 		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
-
 
 		cycleTime = adjustedTime % 90
 		print("--->"+str(cycleTime)+str(channelStates),end='\r')
