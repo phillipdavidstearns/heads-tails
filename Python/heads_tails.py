@@ -7,7 +7,6 @@
 # (credit - https://stackoverflow.com/questions/24255472/download-export-public-google-spreadsheet-as-tsv-from-command-line)
 
 from fileHandlers import *
-import csv
 import random
 import time
 import signal
@@ -64,20 +63,6 @@ eventTimes=[]
 eventIndexes=[]
 lastCycleTime = 0
 
-def clearEventTimes():
-	global eventTimes
-	for i in range(CHANNELS):
-		eventTimes.append([])
-
-def clearChannelStates():
-	global channelStates
-	for i in range(CHANNELS):
-		channelStates.append(0)
-
-def clearEventIndexes():
-	global eventIndexes
-	for i in range(CHANNELS):
-		eventIndexes.append(0)
 
 def setLightOn(channel):
 	global channelStates
@@ -87,7 +72,6 @@ def setLightOff(channel):
 	global channelStates
 	channelStates[channel] = 0
 
-
 def timing():
 
 	global eventTimes
@@ -96,25 +80,30 @@ def timing():
 	for c in range(CHANNELS):
 		if eventTimes[c]:
 			if (time.time() > eventTimes[c][0]):
-				eventIndexes[c]^=1
-				if (eventIndexes[c] == 1):
+				if (eventIndexes[c][0] == 1):
 					setLightOn(c)
-				elif (eventIndexes[c] == 0):
+				elif (eventIndexes[c][0] == 0):
 					setLightOff(c)
+				# remove the event from queue
+				eventIndexes[c]=eventIndexes[c][1:]
 				eventTimes[c]=eventTimes[c][1:]
 				if (len(eventTimes[c])==0):
 					setLightOff(c)
-					eventIndexes[c]^=1
-
 
 def generateTimings(behavior):
 	times=[]
+	indexes=[]
 	startTime=time.time()
 	offset = random.uniform(-behavior[2],behavior[2])
 	for t in range(len(behavior[0])):
 		eventTime = startTime + offset + behavior[0][t] + random.uniform(-behavior[1][t],behavior[1][t])
 		times.append(eventTime)
-	return times
+		if (t%2==0):
+			indexes.append(1)
+		else:
+			indexes.append(0)
+
+	return [times, indexes]
 
 def interruptHandler(signal, frame):
 	print()
@@ -127,19 +116,18 @@ def interruptHandler(signal, frame):
 
 def main():
 
-	regClear()
-
-	clearEventTimes()
-	clearChannelStates()
-	clearEventIndexes()
-
-	if update_score: updateCSV()
-
-	behaviors = openCSV()
-
-	global eventIndexes
 	global eventTimes
+	global eventIndexes
+	global channelStates
 	global lastCycleTime
+
+	for i in range(CHANNELS):
+		eventTimes.append([])
+		eventIndexes.append([])
+		channelStates.append(0)
+
+	regClear()
+	behaviors = loadScore()
 
 	while True:
 
@@ -150,7 +138,9 @@ def main():
 			for c in range(CHANNELS):
 				index = random.randint(0,len(behaviors)-1)
 				behavior = behaviors[ index ]
-				eventTimes[c]+=generateTimings(behavior)
+				timings=generateTimings(behavior)
+				eventTimes[c]+=timings[0]
+				eventIndexes[c]+=timings[1]
 		timing()
 		regOutput(channelStates)
 		lastCycleTime=cycleTime
