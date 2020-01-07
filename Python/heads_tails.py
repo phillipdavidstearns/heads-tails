@@ -58,7 +58,7 @@ def timeDrift():
 	return dotSeconds() - localSeconds()
 
 def adjustedTime():
-	return localSeconds() + timeDrift() + dotOffset + deviation
+	return localSeconds() + dotOffset + deviation
 
 def displaySynch(time):
 	cycle = time % 90
