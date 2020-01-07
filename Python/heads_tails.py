@@ -205,9 +205,9 @@ def main():
 
 	while True:
 
-		time=adjustedTime()
+		tempTime=adjustedTime()
 
-		if ( time >= headlightTimes[0] and  time < headlightTimes[1] ):
+		if ( tempTime >= headlightTimes[0] and  tempTime < headlightTimes[1] ):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
 		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
