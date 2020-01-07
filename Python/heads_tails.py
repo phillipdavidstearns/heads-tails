@@ -204,9 +204,6 @@ def main():
 	except: # otherwise we go with the defaults or last used
 		pass
 
-	print(headlightTimes)
-	exit()
-
 	while True:
 
 		adjustedTime=adjustedTime()
