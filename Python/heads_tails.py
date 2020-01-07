@@ -211,7 +211,7 @@ def main():
 
 		adjustedTime=adjustedTime()
 
-		if ( adjustedTime >= headlightTimes[0] && < headlightTimes[1] ):
+		if ( adjustedTime >= headlightTimes[0] and < headlightTimes[1] ):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
 		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
