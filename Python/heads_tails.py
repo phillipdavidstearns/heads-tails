@@ -208,12 +208,12 @@ def main():
 		tempTime=adjustedTime()
 		headlightTime = tempTime >= headlightTimes[0] and  tempTime < headlightTimes[1] 
 		if ( headlightTime ):
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
-		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 )
+		else:
+			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
 
 		cycleTime = tempTime % 90
-		print("--->"+"{:02d}".format(cycleTime)+str(channelStates),end='\r')
+		print("--->"+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			startTime = time.time()
 			for c in range(CHANNELS):
