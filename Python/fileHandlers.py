@@ -107,7 +107,7 @@ def updateDeviation():
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
-		print("[+] 'score.csv' successfully retrieved")
+		print("[+] 'deviation.txt' successfully retrieved")
 	else:
 		print("[!] curl completed with a non-zero exit status")
 		os.system('rm '+temp_filename+' 2>/dev/null')
