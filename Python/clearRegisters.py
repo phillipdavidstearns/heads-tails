@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import RPi.GPIO as GPIO # using RPi.GPIO
-import time
 
 # GPIO pin numbers
 STR = 17
@@ -17,9 +16,7 @@ def setup():
 	GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 	GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 
-
 def regClear():
-	time.sleep(0.5)
 	GPIO.output(DATA, 0)
 	for i in range(CHANNELS):
 		GPIO.output(CLK, 0)
@@ -27,7 +24,6 @@ def regClear():
 	GPIO.output(CLK, 0)
 	GPIO.output(STR, 1)
 	GPIO.output(STR, 0)
-	time.sleep(0.5)
 
 def main():
 	regClear()

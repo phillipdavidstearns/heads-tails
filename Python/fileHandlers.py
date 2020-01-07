@@ -1,6 +1,7 @@
 #!/usr/bin/python3/
 
 import os
+import csv
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 

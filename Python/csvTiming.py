@@ -6,58 +6,18 @@
 # curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"
 # (credit - https://stackoverflow.com/questions/24255472/download-export-public-google-spreadsheet-as-tsv-from-command-line)
 
+from fileHandlers import *
 import csv
 import random
 import time
-import random
 import signal
 import os
 
-update_score=False
 CHANNELS=32
 channelStates=[]
 eventTimes=[]
 eventIndexes=[]
 lastCycleTime = 0
-
-def clearEventTimes():
-	global eventTimes
-	for i in range(CHANNELS):
-		eventTimes.append([])
-
-def clearChannelStates():
-	global channelStates
-	for i in range(CHANNELS):
-		channelStates.append(0)
-
-def clearEventIndexes():
-	global eventIndexes
-	for i in range(CHANNELS):
-		eventIndexes.append(0)
-
-script_dir = os.path.split(os.path.realpath(__file__))[0]
-
-def updateScoreCSV):
-	temp_filename = '"' + script_dir + '/data/score_temp.csv' + '"'
-	filename = '"' + script_dir + '/data/score.csv' +  '"'
-	cmd = 'curl --connect-timeout 5 -sLm 10'
-	cmd += ' -o ' + temp_filename
-	cmd += ' "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"'
-	update = -1
-
-	try:
-		print("[*] Requesting 'score.csv' data from remote server")
-		update = os.system(cmd)
-	except:
-		print("[!] Couldn't update 'score.csv' ")
-
-	if ( update == 0 ):
-		os.system("mv "+temp_filename+" "+filename)
-		print("[+] 'score.csv' successfully retrieved")
-	else:
-		print("[!] curl completed with a non-zero exit status")
-		os.system('rm '+temp_filename+' 2>/dev/null')
-	return update
 
 def setLightOn(channel):
 	global channelStates
@@ -66,35 +26,6 @@ def setLightOn(channel):
 def setLightOff(channel):
 	global channelStates
 	channelStates[channel] = 0
-
-def loadScore():
-	with open( script_dir + "/data/score.csv",'rt') as f:
-		reader = csv.reader(f)
-		behaviors=[]
-		for row in reader:
-			index=0
-			times=[]
-			variations=[]
-			offset_variation=0
-			for item in row:
-				temp = -1.0
-
-				if item: # execute if string isn't empty
-					try: # convert appropriate strings to float
-						temp=float(item)
-					except:
-						pass
-
-					if (temp != -1): # test if a conversion happened
-						if (index == 0):
-							offset_variation=(temp)
-						elif (index % 2 == 1):
-							times.append(temp)
-						else:
-							variations.append(temp)
-						index += 1
-			behaviors.append(list([times,variations,offset_variation]))
-	return behaviors
 
 def interruptHandler(signal, frame):
 	print()
@@ -109,39 +40,45 @@ def timing():
 	for c in range(CHANNELS):
 		if eventTimes[c]:
 			if (time.time() > eventTimes[c][0]):
-				eventIndexes[c]^=1
-				if (eventIndexes[c] == 1):
+				if (eventIndexes[c][0] == 1):
 					setLightOn(c)
-				elif (eventIndexes[c] == 0):
+				elif (eventIndexes[c][0] == 0):
 					setLightOff(c)
+				# remove the event from queue
+				eventIndexes[c]=eventIndexes[c][1:]
 				eventTimes[c]=eventTimes[c][1:]
 				if (len(eventTimes[c])==0):
 					setLightOff(c)
-					eventIndexes[c]^=1
-
 
 def generateTimings(behavior):
 	times=[]
+	indexes=[]
 	startTime=time.time()
 	offset = random.uniform(-behavior[2],behavior[2])
 	for t in range(len(behavior[0])):
 		eventTime = startTime + offset + behavior[0][t] + random.uniform(-behavior[1][t],behavior[1][t])
 		times.append(eventTime)
-	return times
+		if (t%2==0):
+			indexes.append(1)
+		else:
+			indexes.append(0)
+
+	return [times, indexes]
 
 def main():
 
-	clearEventTimes()
-	clearChannelStates()
-	clearEventIndexes()
-
-	if update_score: updateCSV()
-
-	behaviors = openCSV()
-
-	global eventIndexes
+	
 	global eventTimes
+	global eventIndexes
+	global channelStates
 	global lastCycleTime
+
+	for i in range(CHANNELS):
+		eventTimes.append([])
+		eventIndexes.append([])
+		channelStates.append(0)
+
+	behaviors = loadScore()
 
 	while True:
 
@@ -152,7 +89,9 @@ def main():
 			for c in range(CHANNELS):
 				index = random.randint(0,len(behaviors)-1)
 				behavior = behaviors[ index ]
-				eventTimes[c]+=generateTimings(behavior)
+				timings=generateTimings(behavior)
+				eventTimes[c]+=timings[0]
+				eventIndexes[c]+=timings[1]
 		timing()
 		lastCycleTime=cycleTime
 		time.sleep(.1)

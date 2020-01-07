@@ -9,7 +9,7 @@ import os
 STR = 17
 DATA = 27
 CLK = 22
-HEADLIGHTS = 12
+HEADLIGHTS = 12 # usually this would be pwm controlled but this 
 
 CHANNELS = 32; # number of output channels
 
@@ -41,7 +41,7 @@ def allON():
 
 def keyboardInterruptHandler(signal, frame):
 	print()
-	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	regClear()
 	GPIO.cleanup()
 	os._exit(0)

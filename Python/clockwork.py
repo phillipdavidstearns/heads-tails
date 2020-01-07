@@ -30,23 +30,6 @@ tc = time.time()
 tp = 0.0
 dt = 1.0
 cycle = 90.0
- 
-def loadDeviation():
-	with open( script_dir + "/data/deviation.txt",'rt') as f:
-		deviation = f.read()
-	return int(deviation)
-
-def loadHeadlightTimes():
-	with open( script_dir + "/data/headlights.csv",'rt') as f:
-		reader = csv.reader(f)
-		headlights= {}
-		for row in reader:
-			date=row[0]
-			onTime=row[1]
-			offTime=row[2]
-			headlights[date]=[onTime,offTime]
-
-	return headlights
 
 def dotSeconds():
 	# resource on synching raspberry pi https://raspberrytips.com/time-sync-raspberry-pi/
