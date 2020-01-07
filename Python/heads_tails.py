@@ -213,7 +213,7 @@ def main():
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 )
 
 		cycleTime = tempTime % 90
-		print("--->"+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
+		print("--->"+" "+str(tempTime)+" "+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			startTime = time.time()
 			for c in range(CHANNELS):
