@@ -6,12 +6,12 @@
 # curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"
 # (credit - https://stackoverflow.com/questions/24255472/download-export-public-google-spreadsheet-as-tsv-from-command-line)
 
+import updates
 import csv
 import random
 import time
 import random
 import signal
-import os
 import subprocess
 
 CHANNELS=32
@@ -30,51 +30,6 @@ tc = time.time()
 tp = 0.0
 dt = 1.0
 cycle = 90.0
-
-script_dir = os.path.split(os.path.realpath(__file__))[0]
-
-def updateHeadlightsCSV():
-	cmd = 'curl --connect-timeout 5 -m 10 -L '
-	cmd += '"https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1716879590&single=true&output=csv"'
-	temp_filename = '"' + script_dir + '/data/headlights_temp.csv' +  '"'
-	filename = '"' + script_dir + '/data/headlights.csv' +  '"'
-	cmd +=' > ' + temp_filename
-	update = -1
-
-	try:
-		update = os.system(cmd)
-	except:
-		print("Couldn't update headlight timings")
-
-	if ( update == 0 ):
-		os.system("mv "+temp_filename+" "+filename)
-	else:
-		print("curl completed with a non-zero exit status")
-		os.system("rm "+temp_filename)
-
-def updateDeviation():
-	global deviation
-	cmd = 'curl --connect-timeout 5 -m 10 -L '
-	cmd += '"https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=913901720&single=true&output=csv"'
-	temp_filename = '"' + script_dir + '/data/deviation_temp.txt' +  '"'
-	filename = '"' + script_dir + '/data/deviation.txt' +  '"'
-	cmd +=' > ' + temp_filename
-	update = -1
-
-	try:
-		update = os.system(cmd)
-	except:
-		print("Couldn't update deviation")
-
-	if ( update == 0 ):
-		os.system("mv "+temp_filename+" "+filename)
-	else:
-		print("curl completed with a non-zero exit status")
-		os.system("rm "+temp_filename)
-
-	return loadDeviation()
-	
-# A demo of readlines()
  
 def loadDeviation():
 	with open( script_dir + "/data/deviation.txt",'rt') as f:

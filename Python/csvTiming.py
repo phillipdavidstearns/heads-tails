@@ -36,10 +36,28 @@ def clearEventIndexes():
 		eventIndexes.append(0)
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
-curl = 'curl --connect-timeout 5 -m 10 -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"'
-temp_filename = "\"" + script_dir + "/data/score_temp.csv" +  "\""
-filename = "\"" + script_dir + "/data/score.csv" +  "\""
-cmd = curl+" > "+temp_filename
+
+def updateScoreCSV):
+	temp_filename = '"' + script_dir + '/data/score_temp.csv' + '"'
+	filename = '"' + script_dir + '/data/score.csv' +  '"'
+	cmd = 'curl --connect-timeout 5 -sLm 10'
+	cmd += ' -o ' + temp_filename
+	cmd += ' "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGp8GI85wmWP7yZaUa0EV_reKdn2yDFgRBotHnqVOfPKjek4_6JIy4lCnnp9xT9BZavKjeOy-ZYsn_/pub?gid=1797776547&single=true&output=csv"'
+	update = -1
+
+	try:
+		print("[*] Requesting 'score.csv' data from remote server")
+		update = os.system(cmd)
+	except:
+		print("[!] Couldn't update 'score.csv' ")
+
+	if ( update == 0 ):
+		os.system("mv "+temp_filename+" "+filename)
+		print("[+] 'score.csv' successfully retrieved")
+	else:
+		print("[!] curl completed with a non-zero exit status")
+		os.system('rm '+temp_filename+' 2>/dev/null')
+	return update
 
 def setLightOn(channel):
 	global channelStates
@@ -49,21 +67,7 @@ def setLightOff(channel):
 	global channelStates
 	channelStates[channel] = 0
 
-def updateCSV():
-	update = -1
-	try:
-		update = os.system(cmd)
-		print(update)
-	except:
-		print("Couldn't update sheet")
-
-	if ( update == 0 ):
-		os.system("mv "+temp_filename+" "+filename)
-	else:
-		os.system("rm "+temp_filename)
-		print("curl completed with a non-zero exit status")
-
-def openCSV():
+def loadScore():
 	with open( script_dir + "/data/score.csv",'rt') as f:
 		reader = csv.reader(f)
 		behaviors=[]
@@ -92,14 +96,10 @@ def openCSV():
 			behaviors.append(list([times,variations,offset_variation]))
 	return behaviors
 
-def keyboardInterruptHandler(signal, frame):
+def interruptHandler(signal, frame):
 	print()
-	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	os._exit(0)
-
-def printBehavior(behavior):
-	for i, timing in enumerate(behavior):
-		print(behavior[i])
 
 def timing():
 
@@ -157,6 +157,7 @@ def main():
 		lastCycleTime=cycleTime
 		time.sleep(.1)
 
-signal.signal(signal.SIGINT, keyboardInterruptHandler)
+signal.signal(signal.SIGINT, interruptHandler)
+signal.signal(signal.SIGTERM, interruptHandler)
 
 main()

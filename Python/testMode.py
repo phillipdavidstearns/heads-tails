@@ -9,6 +9,7 @@ import os
 STR = 17
 DATA = 27
 CLK = 22
+HEADLIGHTS = 12
 
 CHANNELS = 32; # number of output channels
 
@@ -18,6 +19,7 @@ def setup():
 	GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 	GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 	GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+	GPIO.setup(HEADLIGHTS, GPIO.OUT, initial=GPIO.HIGH) # make pin into an output
 
 def regClear():
 	GPIO.output(DATA, 0)
