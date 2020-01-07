@@ -213,7 +213,7 @@ def main():
 		# 	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 ) # bright
 		cycleTime = tempTime % 90
 
-		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, (cycleTime/90.0 * 1000000 ))
+		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(cycleTime/90.0 * 1000000 ))
 		# print("--->"+str(headlightTimes)+" "+str(tempTime)+" "+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			startTime = time.time()
