@@ -118,7 +118,6 @@ def main():
 		time.sleep(0.01)
 
 
-
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
 main()

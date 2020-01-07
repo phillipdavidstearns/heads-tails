@@ -68,8 +68,6 @@ def main():
 
 	while True:
 
-
-		
 		regOutput( 1 << (counter % 32) )
 
 		if (counter % 300 == 150):
