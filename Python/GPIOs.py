@@ -7,6 +7,7 @@ import math
 import signal
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 import random
+import pigpio
 
 # GPIO pin numbers
 STR = 17
