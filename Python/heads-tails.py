@@ -77,7 +77,9 @@ CLK = 22
 GRID = 23
 # pigpio PWM
 PWM_PIN = 12
-PWM_FREQ = 400 # frequency of PWM
+PWM_FREQ = 14000 # frequency of PWM
+DIM=int(0.15 * 1000000)
+BRIGHT=1000000
 PWM = pigpio.pi()
 if not PWM.connected:
 	exit()
@@ -220,9 +222,9 @@ def main():
 
 		headlightTime=adjustedTime()
 		if ( headlightTime >= headlightTimes[0] and  headlightTime < headlightTimes[1] ):
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 ) # dim
+			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM ) # dim
 		else:
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 ) # bright
+			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT ) # bright
 
 		cycleTime = adjustedTime() % 90
 
