@@ -13,7 +13,7 @@ INPUT = 23
 FPS = 30; # main refresh rate = frames per second
 INCREMENT = 1/120.0
 
-def incrementCounter():
+def incrementCounter(channel):
 	power_line_time += INCREMENT
 
 GPIO.setmode(GPIO.BCM)
