@@ -10,7 +10,7 @@ import pigpio
 PWM_PIN = 12
 PWM_FREQ = 400 # frequency of PWM
 CHANNELS = 32; # number of output channels
-BRIGHT=int(.2*1000000)
+BRIGHT=int(.15*1000000)
 FPS=30.0
 PWM = pigpio.pi()
 if not PWM.connected:

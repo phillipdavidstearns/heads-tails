@@ -16,12 +16,6 @@ FPS = 30; # refresh rate of LEDs
 
 #------------------------------------------------------------------------
 
-headlightTimes=[ 26400, 60300 ] # default sunrise/sunset times
-headlightState=0 # 0 for dim 1 for bright
-lastHeadlightState=0 # 0 for dim 1 for bright
-
-#------------------------------------------------------------------------
-
 tzOffset = -5 * 3600
 dotOffset = 12 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 drift = 0 # calculated based on onboard frequency counting
