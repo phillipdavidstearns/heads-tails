@@ -35,7 +35,8 @@ def main():
 		power_line_time=time.time()
 		init=False
 	while True:
-		print("   LocalTime: "+str(time.time())+", PowerLineTime: "+str(power_line_time), end='\r')
+		realTime=time.time()
+		print("   LocalTime: "+str(realTime)+", PowerLineTime: "+str(power_line_time)+", Deviation: "+str(realTime-power_line_time), end='\r')
 		time.sleep( 1 / FPS )
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
