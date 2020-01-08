@@ -10,14 +10,13 @@ import pigpio
 PWM_PIN = 12
 PWM_FREQ = 400 # frequency of PWM
 CHANNELS = 32; # number of output channels
-BRIGHT=1000000
-DIM=100000
+BRIGHT=int(.2*1000000)
 FPS=30.0
 PWM = pigpio.pi()
 if not PWM.connected:
 	exit()
 
-PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM )
+PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT)
 
 
 def interruptHandler(signal, frame):
