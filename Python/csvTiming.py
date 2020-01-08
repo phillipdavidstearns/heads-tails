@@ -89,7 +89,6 @@ def main():
 		cycleTime = int(time.time()) % 90 
 		print("--->"+str(cycleTime)+str(channelStates),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
-			startTime = time.time()
 			for c in range(CHANNELS):
 				behavior = behaviors[behaviorList[c]]
 				timings=generateTimings(behavior)

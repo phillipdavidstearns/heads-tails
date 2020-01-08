@@ -67,7 +67,7 @@ def timeDrift():
 	return dotSeconds() - localSeconds()
 
 def adjustedTime():
-	return int(power_line_time + dotOffset + deviation)
+	return int(power_line_time + dotOffset + deviation + tzOffset)
 
 #------------------------------------------------------------------------
 # GPIO related
@@ -218,18 +218,19 @@ def main():
 
 	while True:
 
-		tempTime=adjustedTime()
-		headlightTime = tempTime >= headlightTimes[0] and  tempTime < headlightTimes[1] 
-		
-		if ( headlightTime ):
+		headlightTime=adjustedTime()
+		if ( headlightTime >= headlightTimes[0] and  headlightTime < headlightTimes[1] ):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 100000 ) # dim
 		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 ) # bright
-		cycleTime = tempTime % 90
 
-		realTime=time.time()
-		print("   LocalTime: "+str(realTime)+", PowerLineTime: "+str(power_line_time)+", Deviation: "+str(realTime-power_line_time), end='\r')
+		cycleTime = adjustedTime() % 90
+
+		# realTime=time.time()
+		# print("   LocalTime: "+str(realTime)+", PowerLineTime: "+str(power_line_time)+", Deviation: "+str(realTime-power_line_time), end='\r')
+		
 		# print("--->"+str(headlightTimes)+" "+str(tempTime)+" "+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
+		
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			for c in range(CHANNELS):
 				behavior = behaviors[behaviorList[c]]
