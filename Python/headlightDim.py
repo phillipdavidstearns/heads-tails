@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # import pigpio # using this for hardware PWM, software is not stable!!!
-
+import time
 import signal
 import pigpio
 
@@ -28,12 +28,13 @@ def interruptHandler(signal, frame):
 def main():
 
 	while True:
-
-		if (counter % 300 == 150):
+		theTime=int(time.time())
+		if (theTime % 300 == 150):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT )
-		elif (counter % 300 == 0):
+		elif (theTime % 300 == 0):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM )
 		time.sleep( 1/FPS )
+
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
