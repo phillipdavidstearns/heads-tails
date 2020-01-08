@@ -5,7 +5,6 @@ import signal
 import time
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 
-init=True
 power_line_time=0.0
 start_time=0.0
 # GPIO pin numbers
@@ -17,28 +16,28 @@ def incrementCounter(channel):
 	global power_line_time
 	power_line_time += INCREMENT
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(INPUT, GPIO.IN) # make pin into an input
-GPIO.add_event_detect(INPUT, GPIO.BOTH, callback=incrementCounter)
-
-def keyboardInterruptHandler(signal, frame):
+def interruptHandler(signal, frame):
 	print()
-	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	exit(0)
 
-def main():
+def init():
 	global start_time
 	global power_line_time
-	global init
-	if init:
-		start_time=time.time()
-		power_line_time=time.time()
-		init=False
+	start_time=time.time()
+	power_line_time=time.time()
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(INPUT, GPIO.IN) # make pin into an input
+	GPIO.add_event_detect(INPUT, GPIO.BOTH, callback=incrementCounter)
+
+def main():
 	while True:
 		realTime=time.time()
 		print("   LocalTime: "+str(realTime)+", PowerLineTime: "+str(power_line_time)+", Deviation: "+str(realTime-power_line_time), end='\r')
 		time.sleep( 1 / FPS )
 
-signal.signal(signal.SIGINT, keyboardInterruptHandler)
+signal.signal(signal.SIGINT, interruptHandler)
+signal.signal(signal.SIGTERM, interruptHandler)
 
+init()
 main()

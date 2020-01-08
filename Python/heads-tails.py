@@ -24,9 +24,18 @@ lastHeadlightState=0 # 0 for dim 1 for bright
 
 tzOffset = -5 * 3600
 dotOffset = 12 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
-drift = 0
+drift = 0 # calculated based on onboard frequency counting
 deviation = 0
 
+# grid synch related
+start_time=time.time()
+power_line_time=start_time
+INCREMENT = 1/120.0
+
+def incrementCounter(channel):
+	global power_line_time
+	power_line_time += INCREMENT
+	
 def dotSeconds():
 	# resource on synching raspberry pi https://raspberrytips.com/time-sync-raspberry-pi/
 	# the python3.7 time module https://docs.python.org/3.7/library/time.html
@@ -58,23 +67,14 @@ def timeDrift():
 	return dotSeconds() - localSeconds()
 
 def adjustedTime():
-	return localSeconds() + dotOffset + deviation
-
-def displaySynch(time):
-	cycle = time % 90
-	print("cycle: "+str(cycle)+", adjusted time: "+str(time))
-	if(cycle == 0):
-		print("Green")
-	if(cycle == 34):
-		print("Amber")
-	if(cycle == 37):
-		print("Red")
+	return int(power_line_time + dotOffset + deviation)
 
 #------------------------------------------------------------------------
 # GPIO related
 STR = 17
 DATA = 27
 CLK = 22
+GRID = 23
 # pigpio PWM
 PWM_PIN = 12
 PWM_FREQ = 400 # frequency of PWM
@@ -90,6 +90,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
 GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+GPIO.setup(GRID, GPIO.IN) # make pin into an input
+GPIO.add_event_detect(GRID, GPIO.BOTH, callback=incrementCounter)
 
 def regClear():
 	GPIO.output(DATA, 0)
@@ -162,6 +164,16 @@ def generateTimings(behavior):
 
 	return [times, indexes]
 
+def makeBehaviorList(behaviors):
+	behaviorList=[]
+	itemCount=[0]*len(behaviors)
+	while (len(behaviorList) < CHANNELS):
+		candidate=random.randint(0,len(behaviors)-1)
+		if (itemCount[candidate] < 2):
+			itemCount[candidate] += 1
+			behaviorList.append(random.randint(0,len(behaviors)-1))
+	return behaviorList
+
 def interruptHandler(signal, frame):
 	print()
 	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
@@ -185,6 +197,7 @@ def main():
 
 	regClear()
 	behaviors = loadScore()
+	behaviorList=makeBehaviorList(behaviors)
 
 	#-----synch
 
@@ -214,12 +227,12 @@ def main():
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 1000000 ) # bright
 		cycleTime = tempTime % 90
 
+		realTime=time.time()
+		print("   LocalTime: "+str(realTime)+", PowerLineTime: "+str(power_line_time)+", Deviation: "+str(realTime-power_line_time), end='\r')
 		# print("--->"+str(headlightTimes)+" "+str(tempTime)+" "+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
-			startTime = time.time()
 			for c in range(CHANNELS):
-				index = random.randint(0,len(behaviors)-1)
-				behavior = behaviors[ index ]
+				behavior = behaviors[behaviorList[c]]
 				timings=generateTimings(behavior)
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]

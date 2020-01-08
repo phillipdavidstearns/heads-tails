@@ -59,9 +59,18 @@ def generateTimings(behavior):
 
 	return [times, indexes]
 
+def makeBehaviorList(behaviors):
+	behaviorList=[]
+	itemCount=[0]*len(behaviors)
+	while (len(behaviorList) < CHANNELS):
+		candidate=random.randint(0,len(behaviors)-1)
+		if (itemCount[candidate] < 2):
+			itemCount[candidate] += 1
+			behaviorList.append(random.randint(0,len(behaviors)-1))
+	return behaviorList
+
 def main():
 
-	
 	global eventTimes
 	global eventIndexes
 	global channelStates
@@ -73,6 +82,7 @@ def main():
 		channelStates.append(0)
 
 	behaviors = loadScore()
+	behaviorList=makeBehaviorList(behaviors)
 
 	while True:
 
@@ -81,8 +91,7 @@ def main():
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			startTime = time.time()
 			for c in range(CHANNELS):
-				index = random.randint(0,len(behaviors)-1)
-				behavior = behaviors[ index ]
+				behavior = behaviors[behaviorList[c]]
 				timings=generateTimings(behavior)
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
