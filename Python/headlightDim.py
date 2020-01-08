@@ -17,6 +17,8 @@ PWM = pigpio.pi()
 if not PWM.connected:
 	exit()
 
+PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM )
+
 
 def interruptHandler(signal, frame):
 	print()
@@ -28,11 +30,11 @@ def interruptHandler(signal, frame):
 def main():
 
 	while True:
-		theTime=int(time.time())
-		if (theTime % 2 == 1):
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT )
-		else:
-			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM )
+		# theTime=int(time.time())
+		# if (theTime % 2 == 1):
+		# 	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT )
+		# else:
+		# 	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM )
 		time.sleep( 1/FPS )
 
 
