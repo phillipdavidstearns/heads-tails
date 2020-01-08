@@ -14,6 +14,7 @@ FPS = 30; # main refresh rate = frames per second
 INCREMENT = 1/120.0
 
 def incrementCounter(channel):
+	global power_line_time
 	power_line_time += INCREMENT
 
 GPIO.setmode(GPIO.BCM)
@@ -23,8 +24,6 @@ GPIO.add_event_detect(INPUT, GPIO.BOTH, callback=incrementCounter)
 def keyboardInterruptHandler(signal, frame):
 	print()
 	print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
-	regClear()
-	GPIO.cleanup()
 	exit(0)
 
 def main():
