@@ -8,7 +8,7 @@ import pigpio
 # GPIO pin numbers
 
 PWM_PIN = 12
-PWM_FREQ = 4000 # frequency of PWM
+PWM_FREQ = 14000 # frequency of PWM
 CHANNELS = 32; # number of output channels
 BRIGHT=int(.15*1000000)
 FPS=30.0
