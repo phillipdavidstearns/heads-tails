@@ -11,9 +11,10 @@ start_time=0.0
 # GPIO pin numbers
 INPUT = 23
 FPS = 30; # main refresh rate = frames per second
+INCREMENT = 1/120.0
 
 def incrementCounter():
-	power_line_time += 1/120.0
+	power_line_time += INCREMENT
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(INPUT, GPIO.IN) # make pin into an input
@@ -35,7 +36,7 @@ def main():
 		power_line_time=time.time()
 		init=False
 	while True:
-		print(power_line_time)
+		print("   LocalTime: "+str(time.time())+", PowerLineTime: "+str(power_line_time), end='\r')
 		time.sleep( 1 / FPS )
 
 signal.signal(signal.SIGINT, keyboardInterruptHandler)
