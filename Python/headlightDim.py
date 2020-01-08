@@ -29,10 +29,9 @@ def main():
 
 	while True:
 		theTime=int(time.time())
-		print(theTime)
-		if (theTime % 300 == 150):
+		if (theTime % 2 == 1):
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT )
-		elif (theTime % 300 == 0):
+		else:
 			PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM )
 		time.sleep( 1/FPS )
 
