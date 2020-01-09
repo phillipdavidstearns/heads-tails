@@ -27,6 +27,7 @@ def interruptHandler(signal, frame):
 def setup():
 	initGPIO()
 	regClear()
+	resynch()
 
 def main():
 	while True:
