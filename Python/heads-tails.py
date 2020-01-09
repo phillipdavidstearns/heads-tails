@@ -142,15 +142,15 @@ def updateOutput():
 	for c in range(CHANNELS):
 		if eventTimes[c]:
 			if (adjustedTime() > eventTimes[c][0]):
-				if (eventIndexes[c][0] == 1):
-					setLightOn(c)
-				elif (eventIndexes[c][0] == 0):
-					setLightOff(c)
+				# if (eventIndexes[c][0] == 1):
+				channelStates[c]=eventIndexes[c][0]
+				# elif (eventIndexes[c][0] == 0):
+				# 	setLightOff(c)
 				# remove the event from queue
 				eventIndexes[c]=eventIndexes[c][1:]
 				eventTimes[c]=eventTimes[c][1:]
 				if (len(eventTimes[c])==0):
-					setLightOff(c)
+					channelStates[c]=0
 
 def generateTimings(behavior):
 	times=[]
@@ -201,10 +201,11 @@ def setup():
 	initGPIO()
 	regClear()
 	fetchScore()
+	behaviors = loadScore()
 	resynch()
 	updateHeadlightTimes()
 	headlights = loadHeadlights()
-	behaviors = loadScore()
+	
 
 def main():
 
@@ -215,42 +216,47 @@ def main():
 	global power_line_time
 	global updateFlag
 	global resynchFlag
+	global behaviors
 
 	while True:
 
 		updateHeadlights()
 
-		resynchTime = int(adjustedTime()) % 3600
+		currentTime = int(adjustedTime())
 
-		cycleTime = int(adjustedTime()) % 90
+		resynchTime = currentTime % 30
+		refreshScoreTime = currentTime + 1 % 30
+		cycleTime = currentTime % 90
+
 		localTime = time.localtime()
-
 		print(" cycle: "+str(cycleTime)
 			+", plt: "+str(int(power_line_time))
-			+", adj: "+str(int(adjustedTime()))
-			+", local: "+str(int(time.time()))
-			+f" - H: {localTime[3]:02d}"
-			+f" M: {localTime[4]:02d}"
-			+f" S: {localTime[5]:02d}"
+			+", adj: "+str(currentTime)
 			,end='\r')
 
-
-		if( resynchTime == 0 and resynchFlag):
+		if (resynchTime == 0 and resynchFlag):
 			resynch()
 			resynchFlag=False
 		elif(resynchTime != 0 and not resynchFlag):
 			resynchFlag=True
 
-		if( cycleTime == 0 and updateFlag):
-			updateBehaviors()
+		if (refreshScoreTime == 0 and refreshScoreFlag):
+			fetchScore()
+			behaviors = loadScore()
+			refreshScoreFlag = False
+		elif (refreshScoreTime != 0 and not refreshScoreFlag):
+			refreshScoreFlag = True
+
+		if (cycleTime == 0 and updateFlag):
+		 	updateBehaviors()
 			updateFlag=False
-		elif(cycleTime != 0 and not updateFlag):
+		elif (cycleTime != 0 and not updateFlag):
 			updateFlag=True
 
 		updateOutput()
 
 		regOutput(channelStates)
-		
+
 		time.sleep(1/FPS)
 
 signal.signal(signal.SIGINT, interruptHandler)
