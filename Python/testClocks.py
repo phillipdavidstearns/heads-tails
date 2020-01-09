@@ -41,6 +41,6 @@ def main():
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
 
-globalVars.init()
+init()
 setup()
 main()
