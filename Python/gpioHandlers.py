@@ -1,3 +1,4 @@
+from timingHandlers import *
 import pigpio # using this for hardware PWM, software is not stable!!!
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 
@@ -45,7 +46,3 @@ def regOutput(channels):
 	GPIO.output(STR, 1)
 	GPIO.output(STR, 0)
 	GPIO.output(DATA, 0)
-
-def incrementCounter(channel):
-	global power_line_time
-	power_line_time += INCREMENT
