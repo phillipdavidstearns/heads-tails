@@ -18,7 +18,7 @@ if not PWM.connected:
 #------------------------------------------------------------------------
 # RPi.GPIO
 
-def initGPIO();
+def initGPIO():
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
