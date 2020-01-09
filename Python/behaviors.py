@@ -16,6 +16,7 @@ parser.add_argument('-b', type=int, default=0, help='behavior')
 args = parser.parse_args()
 b=args.b
 
+
 #------------------------------------------------------------------------
 
 CHANNELS=32
@@ -25,8 +26,6 @@ FPS = 30; # refresh rate of LEDs
 
 # grid synch related
 start_time=time.time()
-power_line_time=start_time
-INCREMENT = 1/120.0
 
 #------------------------------------------------------------------------
 # GPIO related
@@ -136,8 +135,8 @@ def main():
 
 	while True:
 
-		cycleTime = int(time.time()) % 90
-
+		cycleTime = int(time.time()-start_time) % 90
+		print(cycleTime)
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			for c in range(CHANNELS):
 				timings=generateTimings(behaviors[b])
