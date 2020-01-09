@@ -1,26 +1,85 @@
 #!/usr/bin/python3
 
-from globalVars import *
 from fileHandlers import *
-from behaviorHandlers import *
-from gpioHandlers import *
 import signal
 import os
 import pigpio # using this for hardware PWM, software is not stable!!!
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
+import random
+import time
+
+#------------------------------------------------------------------------
+
+CHANNELS=32
+FPS = 30
+
+INCREMENT = 1/120.0
+
+tzOffset = -5 * 3600
+dotOffset = 0 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
+deviation = 0
+power_line_time=time.time()
+
+channelStates=[]
+eventTimes=[]
+eventIndexes=[]
+lastCycleTime = 0
+
+script_dir = os.path.split(os.path.realpath(__file__))[0]
+
+STR = 17
+DATA = 27
+CLK = 22
+GRID = 23
+
+PWM_PIN = 12
+PWM_FREQ = 14000 # frequency of PWM
+
+PWM = pigpio.pi()
+
+if not PWM.connected:
+	exit()
+
+#------------------------------------------------------------------------
+# RPi.GPIO
+
+def initGPIO():
+	GPIO.setwarnings(False)
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(STR, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+	GPIO.setup(DATA, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+	GPIO.setup(CLK, GPIO.OUT, initial=GPIO.LOW) # make pin into an output
+	GPIO.setup(GRID, GPIO.IN) # make pin into an input
+	GPIO.add_event_detect(GRID, GPIO.BOTH, callback=incrementCounter)
+
+def regClear():
+	GPIO.output(DATA, 0)
+	for i in range(CHANNELS):
+		GPIO.output(CLK, 0)
+		GPIO.output(CLK, 1)
+	GPIO.output(CLK, 0)
+	GPIO.output(STR, 1)
+	GPIO.output(STR, 0)
+
+def regOutput(channels):
+	for i in range(CHANNELS):
+		GPIO.output(CLK, 0)
+		GPIO.output(DATA, channels[CHANNELS - i - 1])
+		GPIO.output(CLK, 1)
+	GPIO.output(CLK, 0)
+	GPIO.output(STR, 1)
+	GPIO.output(STR, 0)
+	GPIO.output(DATA, 0)
+
+def incrementCounter(channel):
+	global power_line_time
+	power_line_time += INCREMENT
 
 #------------------------------------------------------------------------
 
 headlightTimes=[ 26400, 60300 ] # default sunrise/sunset times
 headlightState=0 # 0 for dim 1 for bright
 lastHeadlightState=0 # 0 for dim 1 for bright
-
-def resynch():
-	global power_line_time
-	global deviation
-	fetchDeviation()
-	deviation = loadDeviation()
-	power_line_time=time.time()
 
 def updateHeadlightTimes():
 	date=str(time.localtime()[1])+'/'+str(time.localtime()[2])
@@ -40,6 +99,76 @@ def updateHeadlights():
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM ) # dim
 	else:
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT ) # bright
+
+def resynch():
+	global power_line_time
+	global deviation
+	fetchDeviation()
+	deviation = loadDeviation()
+	power_line_time=time.time()
+
+#------------------------------------------------------------------------
+
+def setLightOn(channel):
+	global channelStates
+	channelStates[channel] = 1
+
+def setLightOff(channel):
+	global channelStates
+	channelStates[channel] = 0
+
+def updateBehaviors():
+	global eventTimes
+	global eventIndexes
+	behaviors = loadScore()
+	behaviorList=makeBehaviorList(behaviors)
+	for c in range(CHANNELS):
+		behavior = behaviors[behaviorList[c]]
+		timings=generateTimings(behavior)
+		eventTimes[c]+=timings[0]
+		eventIndexes[c]+=timings[1]
+
+def updateOutput():
+	global eventTimes
+	global eventIndexes
+	for c in range(CHANNELS):
+		if eventTimes[c]:
+			if (time.time() > eventTimes[c][0]):
+				if (eventIndexes[c][0] == 1):
+					setLightOn(c)
+				elif (eventIndexes[c][0] == 0):
+					setLightOff(c)
+				# remove the event from queue
+				eventIndexes[c]=eventIndexes[c][1:]
+				eventTimes[c]=eventTimes[c][1:]
+				if (len(eventTimes[c])==0):
+					setLightOff(c)
+
+def generateTimings(behavior):
+	times=[]
+	indexes=[]
+	offset = random.uniform(-behavior[2],behavior[2])
+	startTime=adjustedTime()
+	for t in range(len(behavior[0])):
+		eventTime = startTime + offset + behavior[0][t] + random.uniform(-behavior[1][t],behavior[1][t])
+		times.append(eventTime)
+		if (t%2==0):
+			indexes.append(1)
+		else:
+			indexes.append(0)
+	return [times, indexes]
+
+def makeBehaviorList(behaviors):
+	behaviorList=[]
+	itemCount=[0]*len(behaviors)
+	while (len(behaviorList) < CHANNELS):
+		candidate=random.randint(0,len(behaviors)-1)
+		if (itemCount[candidate] < 2):
+			itemCount[candidate] += 1
+			behaviorList.append(random.randint(0,len(behaviors)-1))
+	return behaviorList
+
+#------------------------------------------------------------------------
 
 def interruptHandler(signal, frame):
 	print()
