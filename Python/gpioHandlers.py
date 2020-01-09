@@ -5,10 +5,6 @@ import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 import subprocess
 import time
 
-def incrementCounter(channel):
-	global power_line_time
-	power_line_time += INCREMENT
-
 #------------------------------------------------------------------------
 
 if not PWM.connected:
