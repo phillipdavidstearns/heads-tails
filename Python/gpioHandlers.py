@@ -4,16 +4,7 @@ import pigpio # using this for hardware PWM, software is not stable!!!
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 
 #------------------------------------------------------------------------
-# GPIO related
-STR = 17
-DATA = 27
-CLK = 22
-GRID = 23
-# pigpio PWM
-PWM_PIN = 12
-PWM_FREQ = 14000 # frequency of PWM
-# init pigpio, connect to pigpiod
-PWM = pigpio.pi()
+
 if not PWM.connected:
 	exit()
 

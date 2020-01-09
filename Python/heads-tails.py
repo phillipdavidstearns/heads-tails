@@ -78,12 +78,15 @@ def main():
 
 	while True:
 
-		cycleTime = adjustedTime() % 90
+		cycleTime = int(adjustedTime()) % 90
 
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			updateBehaviors()
+
 		updateOutput()
+
 		regOutput(channelStates)
+		
 		lastCycleTime=cycleTime
 		time.sleep(1/FPS)
 

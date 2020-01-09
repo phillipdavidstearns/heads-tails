@@ -6,11 +6,6 @@ from timingHandlers import *
 import random
 import time
 
-channelStates=[]
-eventTimes=[]
-eventIndexes=[]
-lastCycleTime = 0
-
 def setLightOn(channel):
 	global channelStates
 	channelStates[channel] = 1
