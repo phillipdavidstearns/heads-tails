@@ -131,6 +131,7 @@ def main():
 		channelStates.append(0)
 
 	regClear()
+	updateScore()
 	behaviors = loadScore()
 
 	while True:
