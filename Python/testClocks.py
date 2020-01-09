@@ -103,7 +103,7 @@ def setup():
 def main():
 
 	while True:
-		print(" "+str(power_line_time)+", "+str(adjustedTime())+", "+str(time.time()),end='\r')
+		print(" plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()),end='\r')
 		time.sleep(1/FPS)
 
 signal.signal(signal.SIGINT, interruptHandler)
