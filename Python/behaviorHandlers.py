@@ -2,6 +2,7 @@
 
 from globalVars import *
 from fileHandlers import *
+from timingHandlers import *
 import random
 import time
 
@@ -50,6 +51,7 @@ def generateTimings(behavior):
 	times=[]
 	indexes=[]
 	offset = random.uniform(-behavior[2],behavior[2])
+	startTime=adjustedTime()
 	for t in range(len(behavior[0])):
 		eventTime = startTime + offset + behavior[0][t] + random.uniform(-behavior[1][t],behavior[1][t])
 		times.append(eventTime)
