@@ -90,7 +90,7 @@ def loadScore():
 			behaviors.append(list([times,variations,offset_variation]))
 	return behaviors
 
-def updateDeviation():
+def updateDeviation(debug=False):
 
 	temp_filename = '"' + script_dir + '/data/deviation_temp.txt' + '"'
 	filename = '"' + script_dir + '/data/deviation.txt' +  '"'

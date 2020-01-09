@@ -205,7 +205,6 @@ def main():
 
 	updateDeviation()
 	updateScore()
-
 	behaviors = loadScore()
 
 	#-----headlight stuff
@@ -231,20 +230,16 @@ def main():
 
 		cycleTime = adjustedTime() % 90
 
-		# realTime=time.time()
-		# print("   LocalTime: "+str(realTime)+", PowerLineTime: "+str(power_line_time)+", Deviation: "+str(realTime-power_line_time), end='\r')
-		
-		#print("   "+str(headlightTimes)+" "+str(tempTime)+" "+str(headlightTime)+" {:02d} ".format(cycleTime)+str(channelStates),end='\r')
-		#if True:
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
+			updateDeviation()
+			updateScore()
+			behaviors = loadScore()
 			behaviorList=makeBehaviorList(behaviors)
 			for c in range(CHANNELS):
 				behavior = behaviors[behaviorList[c]]
 				timings=generateTimings(behavior)
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
-
-
 		timing()
 		regOutput(channelStates)
 		lastCycleTime=cycleTime

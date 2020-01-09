@@ -4,12 +4,12 @@
 import time
 import signal
 import pigpio
-import argparse
+	import argparse
 
-parser = argparse.ArgumentParser(description='Set brightness of headlights')
-parser.add_argument('-b', type=float, default=0.15, help='brightness %')
+	parser = argparse.ArgumentParser(description='Set brightness of headlights')
+	parser.add_argument('-b', type=float, default=0.15, help='brightness %')
 
-args = parser.parse_args()
+	args = parser.parse_args()
 
 # GPIO pin numbers
 
