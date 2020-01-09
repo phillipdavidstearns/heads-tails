@@ -97,13 +97,14 @@ def interruptHandler(signal, frame):
 	os._exit(0)
 
 def setup():
+	initGPIO()
 	resynch()
 
 def main():
 
 	while True:
 
-		print("  "+str(adjustedTime()))
+		print("  "+str(adjustedTime()),end='\r')
 		time.sleep(1/FPS)
 
 signal.signal(signal.SIGINT, interruptHandler)
