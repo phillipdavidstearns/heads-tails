@@ -140,10 +140,13 @@ def main():
 		# print("   {:02d}".format(cycleTime), end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			print(behaviors[b])
+			allTimings=[]
 			for c in range(CHANNELS):
 				timings=generateTimings(behaviors[b])
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
+				allTimings.append(timings)
+			print(allTimings)
 		timing()
 		regOutput(channelStates)
 		lastCycleTime=cycleTime
