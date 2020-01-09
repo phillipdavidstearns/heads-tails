@@ -16,6 +16,13 @@ headlightTimes=[ 26400, 60300 ] # default sunrise/sunset times
 headlightState=0 # 0 for dim 1 for bright
 lastHeadlightState=0 # 0 for dim 1 for bright
 
+def resynch():
+	global power_line_time
+	global deviation
+	fetchDeviation()
+	deviation = loadDeviation()
+	power_line_time=time.time()
+
 def updateHeadlightTimes():
 	date=str(time.localtime()[1])+'/'+str(time.localtime()[2])
 	

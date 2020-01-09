@@ -43,10 +43,3 @@ def timeDrift():
 
 def adjustedTime():
 	return int(power_line_time + dotOffset + deviation + tzOffset)
-
-def resynch():
-	global power_line_time
-	global deviation
-	fetchDeviation()
-	deviation = loadDeviation()
-	power_line_time=time.time()
