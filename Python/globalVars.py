@@ -31,6 +31,11 @@ PWM_FREQ = 14000 # frequency of PWM
 
 PWM = pigpio.pi()
 
+def incrementCounter(channel):
+	global power_line_time
+	power_line_time += INCREMENT
+	print("power_line_time: "+str(power_line_time),end='\r')
+
 def init():
 	global CHANNELS
 	CHANNELS=32

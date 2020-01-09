@@ -1,5 +1,3 @@
-#!/usr/bin/python3/
-
 from globalVars import *
 import os
 import csv
