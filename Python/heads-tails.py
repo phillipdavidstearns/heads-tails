@@ -20,6 +20,7 @@ dotOffset = 0 # based on the start of Phase B @ 51 seconds in the cycle starting
 deviation = 0
 power_line_time=time.time()
 
+behaviors=[]
 channelStates=[]
 eventTimes=[]
 eventIndexes=[]
@@ -123,7 +124,7 @@ def setLightOff(channel):
 def updateBehaviors():
 	global eventTimes
 	global eventIndexes
-	behaviors = loadScore()
+	global behaviors
 	behaviorList=makeBehaviorList(behaviors)
 	for c in range(CHANNELS):
 		behavior = behaviors[behaviorList[c]]
@@ -186,6 +187,7 @@ def setup():
 	global eventTimes
 	global eventIndexes
 	global channelStates
+	global behaviors
 
 	for i in range(CHANNELS):
 		eventTimes.append([])
@@ -196,6 +198,9 @@ def setup():
 	regClear()
 	fetchScore()
 	resynch()
+	updateHeadlightTimes()
+	headlights = loadHeadlights()
+	behaviors = loadScore()
 
 def main():
 
@@ -205,9 +210,9 @@ def main():
 	global lastCycleTime
 	global power_line_time
 
-	headlights = loadHeadlights()
-
 	while True:
+
+		updateHeadlights()
 
 		cycleTime = int(adjustedTime()) % 90
 		print(" plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()),end='\r')
