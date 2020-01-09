@@ -1,3 +1,4 @@
+from globalVars import *
 from timingHandlers import *
 import pigpio # using this for hardware PWM, software is not stable!!!
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM

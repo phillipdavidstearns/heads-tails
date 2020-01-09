@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from globalVars import *
 from fileHandlers import *
 from timingHandlers import *
 from behaviorHandlers import *
@@ -8,11 +9,6 @@ import signal
 import os
 import pigpio # using this for hardware PWM, software is not stable!!!
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
-
-#------------------------------------------------------------------------
-
-CHANNELS=32
-FPS = 30; # refresh rate of LEDs
 
 #------------------------------------------------------------------------
 

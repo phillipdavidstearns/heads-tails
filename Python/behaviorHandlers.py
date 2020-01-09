@@ -1,5 +1,6 @@
 #!/usr/bin/python3/
 
+from globalVars import *
 from fileHandlers import *
 import random
 import time
