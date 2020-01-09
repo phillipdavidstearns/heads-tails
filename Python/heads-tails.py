@@ -160,6 +160,7 @@ def generateTimings(behavior):
 	for t in range(len(behavior[0])):
 		print("t: "+str(t))
 		eventTime = startTime + offset + behavior[0][t] + random.uniform(-behavior[1][t],behavior[1][t])
+		print("eventTime: "+str(eventTime))
 		times.append(eventTime)
 		if (t%2==0):
 			indexes.append(1)
