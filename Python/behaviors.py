@@ -67,7 +67,7 @@ def regOutput(channels):
 channelStates=[]
 eventTimes=[]
 eventIndexes=[]
-lastCycleTime = 0
+lastCycleTime = -1
 
 
 def setLightOn(channel):
@@ -136,7 +136,7 @@ def main():
 	while True:
 
 		cycleTime = int(time.time()-start_time) % 90
-		print(cycleTime)
+		print("   {2%d}".format(cycleTime), end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			for c in range(CHANNELS):
 				timings=generateTimings(behaviors[b])
