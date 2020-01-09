@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from globalVars import *
+import globalVars
 from fileHandlers import *
 from gpioHandlers import *
 import signal
@@ -41,5 +41,6 @@ def main():
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
 
+globalVars.init()
 setup()
 main()

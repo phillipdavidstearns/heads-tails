@@ -5,12 +5,12 @@ import pigpio
 def init():
 	global CHANNELS
 	CHANNELS=32
-
 	global FPS # refresh rate of LEDs
 	FPS = 30
 
 	global INCREMENT
 	INCREMENT = 1/120.0
+
 	global tzOffset
 	tzOffset = -5 * 3600
 	global dotOffset
@@ -19,14 +19,16 @@ def init():
 	deviation = 0
 	global power_line_time
 	power_line_time=time.time()
+
 	global channelStates
 	channelStates=[]
 	global eventTimes
 	eventTimes=[]
 	global eventIndexes
 	eventIndexes=[]
-	global
+	global lastCycleTime
 	lastCycleTime = 0
+	
 	global script_dir
 	script_dir = os.path.split(os.path.realpath(__file__))[0]
 
