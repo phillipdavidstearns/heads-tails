@@ -190,6 +190,7 @@ def setup():
 	global eventTimes
 	global eventIndexes
 	global channelStates
+	global behaviors
 
 	for i in range(CHANNELS):
 		eventTimes.append([])
