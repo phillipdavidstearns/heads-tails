@@ -243,12 +243,12 @@ def main():
 		elif(resynchTime != 0 and not resynchFlag):
 			resynchFlag = True
 
-		# if(refreshScoreTime == 0 and refreshScoreFlag):
-		# 	fetchScore()
-		# 	behaviors = loadScore()
-		# 	refreshScoreFlag = False
-		# elif(refreshScoreTime != 0 and not refreshScoreFlag):
-		# 	refreshScoreFlag = True
+		if(refreshScoreTime == 0 and refreshScoreFlag):
+			fetchScore()
+			behaviors = loadScore()
+			refreshScoreFlag = False
+		elif(refreshScoreTime != 0 and not refreshScoreFlag):
+			refreshScoreFlag = True
 
 		# if(cycleTime == 0 and updateFlag):
 		#  	updateBehaviors()
