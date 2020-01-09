@@ -218,8 +218,15 @@ def main():
 		updateHeadlights()
 
 		cycleTime = int(adjustedTime()) % 90
-
-		print(" cycle: "+ str(cycleTime)+", plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()[]),end='\r')
+		localTime = time.localtime()
+		print(" cycle: "+str(cycleTime)
+			+", plt: "+str(power_line_time)
+			+", adj: "+str(adjustedTime())
+			+", local: "+str(time.time())
+			+f" - H: {localTime[3]:02d}"
+			+f" M: {localTime[3]:02d}"
+			+f" S: {localTime[3]:02d}"
+			,end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			updateBehaviors()
 
