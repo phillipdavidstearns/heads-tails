@@ -15,8 +15,7 @@ parser.add_argument('-b', type=int, default=0, help='behavior')
 
 args = parser.parse_args()
 b=args.b
-print(b)
-exit()
+
 #------------------------------------------------------------------------
 
 CHANNELS=32
@@ -141,8 +140,7 @@ def main():
 
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			for c in range(CHANNELS):
-				behavior = behaviors[b]
-				timings=generateTimings(behavior)
+				timings=generateTimings(behaviors[b])
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
 		timing()
