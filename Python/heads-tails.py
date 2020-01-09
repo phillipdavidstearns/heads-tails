@@ -2,7 +2,6 @@
 
 from globalVars import *
 from fileHandlers import *
-from timingHandlers import *
 from behaviorHandlers import *
 from gpioHandlers import *
 import signal
@@ -86,7 +85,7 @@ def main():
 		updateOutput()
 
 		regOutput(channelStates)
-		
+
 		lastCycleTime=cycleTime
 		time.sleep(1/FPS)
 
