@@ -220,12 +220,12 @@ def main():
 		cycleTime = int(adjustedTime()) % 90
 		localTime = time.localtime()
 		print(" cycle: "+str(cycleTime)
-			+", plt: "+str(power_line_time)
-			+", adj: "+str(adjustedTime())
-			+", local: "+str(time.time())
+			+", plt: "+str(int(power_line_time))
+			+", adj: "+str(int(adjustedTime()))
+			+", local: "+str(int(time.time()))
 			+f" - H: {localTime[3]:02d}"
-			+f" M: {localTime[3]:02d}"
-			+f" S: {localTime[3]:02d}"
+			+f" M: {localTime[4]:02d}"
+			+f" S: {localTime[5]:02d}"
 			,end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			updateBehaviors()
