@@ -140,7 +140,7 @@ def updateOutput():
 	global eventIndexes
 	for c in range(CHANNELS):
 		if eventTimes[c]:
-			if (time.time() > eventTimes[c][0]):
+			if (adjustedTime() > eventTimes[c][0]):
 				if (eventIndexes[c][0] == 1):
 					setLightOn(c)
 				elif (eventIndexes[c][0] == 0):
