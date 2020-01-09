@@ -4,3 +4,4 @@
   roles:
     - { role: heads_tails_test_service }
     - { role: heads_tails_service }
+    - { role: behavior_service }
