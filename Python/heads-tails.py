@@ -231,28 +231,29 @@ def main():
 		cycleTime = currentTime % 90
 
 		localTime = time.localtime()
+
 		print(" cycle: "+str(cycleTime)
 			+", plt: "+str(int(power_line_time))
 			+", adj: "+str(currentTime)
 			,end='\r')
 
-		if (resynchTime == 0 and resynchFlag):
+		if(resynchTime == 0 and resynchFlag):
 			resynch()
 			resynchFlag = False
 		elif(resynchTime != 0 and not resynchFlag):
 			resynchFlag = True
 
-		if (refreshScoreTime == 0 and refreshScoreFlag):
+		if(refreshScoreTime == 0 and refreshScoreFlag):
 			fetchScore()
 			behaviors = loadScore()
 			refreshScoreFlag = False
-		elif (refreshScoreTime != 0 and not refreshScoreFlag):
+		elif(refreshScoreTime != 0 and not refreshScoreFlag):
 			refreshScoreFlag = True
 
-		if (cycleTime == 0 and updateFlag):
+		if(cycleTime == 0 and updateFlag):
 		 	updateBehaviors()
 			updateFlag = False
-		elif (cycleTime != 0 and not updateFlag):
+		elif(cycleTime != 0 and not updateFlag):
 			updateFlag=True
 
 		updateOutput()
