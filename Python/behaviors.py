@@ -136,10 +136,9 @@ def main():
 	while True:
 		global b
 		cycleTime = int(time.time()-start_time) % 90
-		print("   {:02d}".format(cycleTime)+" --- behavior: "+str(b), end='\r')
+		print("   {:02d}".format(cycleTime), end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			for c in range(CHANNELS):
-				b+=1
 				timings=generateTimings(behaviors[b])
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
