@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import globalVars
+from globalVars import *
 from fileHandlers import *
 from gpioHandlers import *
 import signal
