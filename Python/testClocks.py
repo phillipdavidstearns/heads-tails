@@ -30,13 +30,7 @@ def setup():
 
 def main():
 	while True:
-		# print(" dev: "+str(deviation)
-		# 	+", PLT: "+str(power_line_time)
-		# 	+", LocalTime: "+str(time.time())
-		# 	+", AdjustedTime: "+str(adjustedTime()),
-		# 	end='\r')
-		print("  power_line_time: "+str(power_line_time),end='\r')
-		time.sleep(.1)
+		time.sleep(1)
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
