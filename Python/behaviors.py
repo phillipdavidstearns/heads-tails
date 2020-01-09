@@ -154,5 +154,6 @@ def main():
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
+signal.signal(signal.SIGHUP, interruptHandler)
 
 main()
