@@ -58,7 +58,7 @@ def main():
 	headlights = loadHeadlights()
 
 	while True:
-		print(" LocalTime: "+str(time.time())+", AdjustedTime: "+str(adjustedTime(),end='\''))
+		print(" LocalTime: "+str(time.time())+", AdjustedTime: "+str(adjustedTime()),end='\'')
 		time.sleep(.1)
 
 
