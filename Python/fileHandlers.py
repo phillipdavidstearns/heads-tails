@@ -5,7 +5,7 @@ import csv
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 
-def updateHeadlights():
+def fetchHeadlights():
 	temp_filename = '"' + script_dir + '/data/headlights_temp.csv' + '"'
 	filename = '"' + script_dir + '/data/headlights.csv' +  '"'
 	cmd = 'curl --connect-timeout 5 -sLm 10'
@@ -39,7 +39,7 @@ def loadHeadlights():
 
 	return headlights
 
-def updateScore():
+def fetchScore():
 	temp_filename = '"' + script_dir + '/data/score_temp.csv' + '"'
 	filename = '"' + script_dir + '/data/score.csv' +  '"'
 	cmd = 'curl --connect-timeout 5 -sLm 10'
@@ -90,7 +90,7 @@ def loadScore():
 			behaviors.append(list([times,variations,offset_variation]))
 	return behaviors
 
-def updateDeviation(debug=False):
+def fetchDeviation(debug=False):
 
 	temp_filename = '"' + script_dir + '/data/deviation_temp.txt' + '"'
 	filename = '"' + script_dir + '/data/deviation.txt' +  '"'
