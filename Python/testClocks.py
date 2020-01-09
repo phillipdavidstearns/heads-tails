@@ -30,37 +30,16 @@ def interruptHandler(signal, frame):
 	os._exit(0)
 
 def setup():
-	global eventTimes
-	global eventIndexes
-	global channelStates
-
-	for i in range(CHANNELS):
-		eventTimes.append([])
-		eventIndexes.append([])
-		channelStates.append(0)
 
 	initGPIO()
 	regClear()
-	fetchScore()
-	resynch()
-
-	headlights = loadHeadlights()
 
 
 def main():
 
-	global eventTimes
-	global eventIndexes
-	global channelStates
-	global lastCycleTime
-	global power_line_time
-
-	headlights = loadHeadlights()
-
 	while True:
-		print(" LocalTime: "+str(time.time())+", AdjustedTime: "+str(adjustedTime()),end='\'')
+		print(" LocalTime: "+str(time.time())+", AdjustedTime: "+str(adjustedTime()),end='\r')
 		time.sleep(.1)
-
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
