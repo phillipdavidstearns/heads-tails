@@ -20,10 +20,6 @@ def interruptHandler(signal, frame):
 	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
 	os._exit(0)
 
-def setup():
-	initGPIO()
-	regClear()
-
 def main():
 	while True:
 		print(" dev: "+str(deviation)
@@ -36,5 +32,4 @@ def main():
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
 
-setup()
 main()
