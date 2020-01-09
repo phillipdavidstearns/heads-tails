@@ -102,6 +102,7 @@ def updateHeadlightTimes():
 
 def updateHeadlights():
 	headlightTime=adjustedTime()
+
 	if ( headlightTime >= headlightTimes[0] and  headlightTime < headlightTimes[1] ):
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(DIM*1000000) ) # dim
 	else:
@@ -218,7 +219,8 @@ def main():
 		updateHeadlights()
 
 		cycleTime = int(adjustedTime()) % 90
-		print(" plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()),end='\r')
+
+		print(" cycle: "+ str(cycleTime)+", plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			updateBehaviors()
 
