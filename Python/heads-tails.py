@@ -210,7 +210,7 @@ def main():
 	while True:
 
 		cycleTime = int(adjustedTime()) % 90
-
+		print(" plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			updateBehaviors()
 
