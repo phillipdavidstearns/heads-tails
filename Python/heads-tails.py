@@ -100,9 +100,9 @@ def updateHeadlightTimes():
 def updateHeadlights():
 	headlightTime=adjustedTime()
 	if ( headlightTime >= headlightTimes[0] and  headlightTime < headlightTimes[1] ):
-		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, DIM ) # dim
+		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(DIM*1000000) ) # dim
 	else:
-		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, BRIGHT ) # bright
+		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(BRIGHT*1000000) ) # bright
 
 def resynch():
 	global power_line_time
