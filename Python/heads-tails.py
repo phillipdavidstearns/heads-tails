@@ -40,6 +40,9 @@ PWM = pigpio.pi()
 if not PWM.connected:
 	exit()
 
+def adjustedTime():
+	return power_line_time + tzOffset + dotOffset + deviation
+
 #------------------------------------------------------------------------
 # RPi.GPIO
 
