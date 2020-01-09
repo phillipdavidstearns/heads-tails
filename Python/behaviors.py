@@ -134,7 +134,7 @@ def main():
 	behaviors = loadScore()
 
 	while True:
-
+		global b
 		cycleTime = int(time.time()-start_time) % 90
 		print("   {:02d}".format(cycleTime)+" --- behavior: "+str(b+1), end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
