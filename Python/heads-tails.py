@@ -16,7 +16,7 @@ FPS = 30
 INCREMENT = 1/120.0
 
 tzOffset = -5 * 3600
-dotOffset = 51-28 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
+dotOffset = 11 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 deviation = 0
 power_line_time=time.time()
 
