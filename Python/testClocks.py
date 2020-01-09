@@ -2,7 +2,6 @@
 
 from globalVars import *
 from fileHandlers import *
-from timingHandlers import *
 from gpioHandlers import *
 import signal
 import os
@@ -36,7 +35,7 @@ def main():
 		# 	+", LocalTime: "+str(time.time())
 		# 	+", AdjustedTime: "+str(adjustedTime()),
 		# 	end='\r')
-		adjustedTime()
+		print("power_line_time: "+str(power_line_time),end='\r')
 		time.sleep(.1)
 
 signal.signal(signal.SIGINT, interruptHandler)
