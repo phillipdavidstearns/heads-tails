@@ -23,7 +23,7 @@ lastHeadlightState=0 # 0 for dim 1 for bright
 #------------------------------------------------------------------------
 
 tzOffset = -5 * 3600
-dotOffset = 10 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
+dotOffset = 12 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 drift = 0 # calculated based on onboard frequency counting
 deviation = 0
 
