@@ -37,7 +37,7 @@ PWM_PIN = 12
 PWM_FREQ = 14000 # frequency of PWM
 
 DIM = 0.15
-BRIGHT = .10
+BRIGHT = 1.0
 
 PWM = pigpio.pi()
 
@@ -101,8 +101,7 @@ def updateHeadlightTimes():
 		pass
 
 def updateHeadlights():
-	headlightTime=adjustedTime()
-
+	headlightTime=int(adjustedTime())%86400
 	if ( headlightTime >= headlightTimes[0] and  headlightTime < headlightTimes[1] ):
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(DIM*1000000) ) # dim
 	else:
@@ -220,7 +219,7 @@ def main():
 
 		cycleTime = int(adjustedTime()) % 90
 
-		print(" cycle: "+ str(cycleTime)+", plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()),end='\r')
+		print(" cycle: "+ str(cycleTime)+", plt: "+str(power_line_time)+", adj: "+str(adjustedTime())+", local: "+str(time.time()[]),end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			updateBehaviors()
 
