@@ -136,7 +136,7 @@ def main():
 	while True:
 
 		cycleTime = int(time.time()-start_time) % 90
-		print("   {2%d}".format(cycleTime), end='\r')
+		print("   {:02d}".format(cycleTime), end='\r')
 		if( cycleTime == 0 and cycleTime != lastCycleTime):
 			for c in range(CHANNELS):
 				timings=generateTimings(behaviors[b])
