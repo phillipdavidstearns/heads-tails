@@ -36,6 +36,9 @@ GRID = 23
 PWM_PIN = 12
 PWM_FREQ = 14000 # frequency of PWM
 
+DIM = 0.15
+BRIGHT = 1.0
+
 PWM = pigpio.pi()
 
 if not PWM.connected:
