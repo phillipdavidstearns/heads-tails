@@ -152,6 +152,7 @@ def timing():
 					setLightOff(c)
 
 def generateTimings(behavior):
+	print("behavior: "+str(behavior))
 	times=[]
 	indexes=[]
 	startTime=time.time()
@@ -242,6 +243,8 @@ def main():
 				timings=generateTimings(behavior)
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
+		exit()
+
 		timing()
 		regOutput(channelStates)
 		lastCycleTime=cycleTime
