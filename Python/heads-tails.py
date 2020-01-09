@@ -250,11 +250,11 @@ def main():
 		elif(refreshScoreTime != 0 and not refreshScoreFlag):
 			refreshScoreFlag = True
 
-		# if(cycleTime == 0 and updateFlag):
-		#  	updateBehaviors()
-		# 	updateFlag = False
-		# elif(cycleTime != 0 and not updateFlag):
-		# 	updateFlag=True
+		if(cycleTime == 0 and updateFlag):
+			updateBehaviors()
+			updateFlag = False
+		elif(cycleTime != 0 and not updateFlag):
+			updateFlag=True
 
 		updateOutput()
 
