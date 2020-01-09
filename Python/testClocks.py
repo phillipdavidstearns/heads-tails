@@ -3,8 +3,10 @@
 from globalVars import *
 from fileHandlers import *
 from timingHandlers import *
+from gpioHandlers import *
 import signal
 import os
+import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 
 #------------------------------------------------------------------------
 
@@ -18,7 +20,13 @@ def resynch():
 def interruptHandler(signal, frame):
 	print()
 	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+	regClear()
+	GPIO.cleanup()
 	os._exit(0)
+
+def setup():
+	initGPIO()
+	regClear()
 
 def main():
 	while True:
@@ -32,4 +40,5 @@ def main():
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)
 
+setup()
 main()
