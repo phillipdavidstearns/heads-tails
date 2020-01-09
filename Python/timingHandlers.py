@@ -37,4 +37,8 @@ def timeDrift():
 	return dotSeconds() - localSeconds()
 
 def adjustedTime():
+	print("power_line_time: " + str(power_line_time)
+		+ ", dotOffset: " + str(dotOffset)
+		+ ", deviation: " + str(deviation)
+		+ ", tzOffset: " + str(tzOffset))
 	return (power_line_time + dotOffset + deviation + tzOffset)
