@@ -104,7 +104,7 @@ def main():
 
 	while True:
 
-		print("  "+str(adjustedTime()),end='\r')
+		print("  "+str(adjustedTime())+", "+str(time.time()),end='\r')
 		time.sleep(1/FPS)
 
 signal.signal(signal.SIGINT, interruptHandler)
