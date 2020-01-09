@@ -19,7 +19,6 @@ def resynch():
 	deviation = loadDeviation()
 	power_line_time=time.time()
 
-
 def interruptHandler(signal, frame):
 	print()
 	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
@@ -30,13 +29,10 @@ def interruptHandler(signal, frame):
 	os._exit(0)
 
 def setup():
-
 	initGPIO()
 	regClear()
 
-
 def main():
-
 	while True:
 		print(" LocalTime: "+str(time.time())+", AdjustedTime: "+str(adjustedTime()),end='\r')
 		time.sleep(.1)

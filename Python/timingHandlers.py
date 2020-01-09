@@ -42,4 +42,4 @@ def timeDrift():
 	return dotSeconds() - localSeconds()
 
 def adjustedTime():
-	return int(power_line_time + dotOffset + deviation + tzOffset)
+	return power_line_time + dotOffset + deviation + tzOffset
