@@ -237,11 +237,11 @@ def main():
 			+", adj: "+str(currentTime)
 			,end='\r')
 
-		# if(resynchTime == 0 and resynchFlag):
-		# 	resynch()
-		# 	resynchFlag = False
-		# elif(resynchTime != 0 and not resynchFlag):
-		# 	resynchFlag = True
+		if(resynchTime == 0 and resynchFlag):
+			resynch()
+			resynchFlag = False
+		elif(resynchTime != 0 and not resynchFlag):
+			resynchFlag = True
 
 		# if(refreshScoreTime == 0 and refreshScoreFlag):
 		# 	fetchScore()
