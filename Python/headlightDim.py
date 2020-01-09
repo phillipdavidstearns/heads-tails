@@ -4,13 +4,20 @@
 import time
 import signal
 import pigpio
+import argparse
 
+parser = argparse.ArgumentParser(description='Set brightness of headlights')
+parser.add_argument('-b', type=float, default=0.15, help='brightness')
+
+args = parser.parse_args()
+print(args.b)
+exit()
 # GPIO pin numbers
 
 PWM_PIN = 12
 PWM_FREQ = 14000 # frequency of PWM
 CHANNELS = 32; # number of output channels
-BRIGHT=int(.05*1000000)
+BRIGHT=int(.15*1000000)
 FPS=30.0
 PWM = pigpio.pi()
 if not PWM.connected:
