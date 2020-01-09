@@ -3,12 +3,8 @@
 from globalVars import *
 from fileHandlers import *
 from timingHandlers import *
-from behaviorHandlers import *
-from gpioHandlers import *
 import signal
 import os
-import pigpio # using this for hardware PWM, software is not stable!!!
-import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 
 #------------------------------------------------------------------------
 
@@ -22,10 +18,6 @@ def resynch():
 def interruptHandler(signal, frame):
 	print()
 	print("Interrupt (ID: {}) has been caught. Cleaning up...".format(signal))
-	regClear()
-	GPIO.cleanup()
-	PWM.hardware_PWM(PWM_PIN, PWM_FREQ, 0)
-	PWM.stop()
 	os._exit(0)
 
 def setup():
