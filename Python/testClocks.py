@@ -7,6 +7,7 @@ from behaviorHandlers import *
 from gpioHandlers import *
 import signal
 import os
+import time
 import pigpio # using this for hardware PWM, software is not stable!!!
 import RPi.GPIO as GPIO # using RPi.GPIO for non-PWM
 
