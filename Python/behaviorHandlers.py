@@ -33,7 +33,6 @@ def updateBehaviors():
 def updateOutput():
 	global eventTimes
 	global eventIndexes
-	channelStates=[]
 	for c in range(CHANNELS):
 		if eventTimes[c]:
 			if (time.time() > eventTimes[c][0]):
