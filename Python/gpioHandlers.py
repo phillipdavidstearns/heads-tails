@@ -45,3 +45,7 @@ def regOutput(channels):
 	GPIO.output(STR, 1)
 	GPIO.output(STR, 0)
 	GPIO.output(DATA, 0)
+
+def incrementCounter(channel):
+	global power_line_time
+	power_line_time += INCREMENT
