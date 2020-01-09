@@ -24,7 +24,8 @@ behaviors=[]
 channelStates=[]
 eventTimes=[]
 eventIndexes=[]
-lastCycleTime = 0
+updateFlag=True
+resynchFlag=True
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 
@@ -101,8 +102,8 @@ def updateHeadlightTimes():
 		pass
 
 def updateHeadlights():
-	headlightTime=int(adjustedTime())%86400
-	if ( headlightTime >= headlightTimes[0] and  headlightTime < headlightTimes[1] ):
+	currentTime=int(adjustedTime())%86400
+	if ( currentTime >= headlightTimes[0] and  currentTime < headlightTimes[1] ):
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(DIM*1000000) ) # dim
 	else:
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(BRIGHT*1000000) ) # bright
@@ -212,13 +213,18 @@ def main():
 	global channelStates
 	global lastCycleTime
 	global power_line_time
+	global updateFlag
+	global resynchFlag
 
 	while True:
 
 		updateHeadlights()
 
+		resynchTime = int(adjustedTime()) % 3600
+
 		cycleTime = int(adjustedTime()) % 90
 		localTime = time.localtime()
+
 		print(" cycle: "+str(cycleTime)
 			+", plt: "+str(int(power_line_time))
 			+", adj: "+str(int(adjustedTime()))
@@ -227,14 +233,24 @@ def main():
 			+f" M: {localTime[4]:02d}"
 			+f" S: {localTime[5]:02d}"
 			,end='\r')
-		if( cycleTime == 0 and cycleTime != lastCycleTime):
+
+
+		if( resynchTime == 0 and resynchFlag):
+			resynch()
+			resynchFlag=False
+		elif(resynchTime != 0 and not resynchFlag):
+			resynchFlag=True
+
+		if( cycleTime == 0 and updateFlag):
 			updateBehaviors()
+			updateFlag=False
+		elif(cycleTime != 0 and not updateFlag):
+			updateFlag=True
 
 		updateOutput()
 
 		regOutput(channelStates)
-
-		lastCycleTime=cycleTime
+		
 		time.sleep(1/FPS)
 
 signal.signal(signal.SIGINT, interruptHandler)
