@@ -36,6 +36,7 @@ def main():
 		# 	+", LocalTime: "+str(time.time())
 		# 	+", AdjustedTime: "+str(adjustedTime()),
 		# 	end='\r')
+		adjustedTime()
 		time.sleep(.1)
 
 signal.signal(signal.SIGINT, interruptHandler)
