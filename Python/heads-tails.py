@@ -26,6 +26,7 @@ eventTimes=[]
 eventIndexes=[]
 updateFlag=True
 resynchFlag=True
+refreshScoreFlag=True
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 
@@ -216,6 +217,7 @@ def main():
 	global power_line_time
 	global updateFlag
 	global resynchFlag
+	global refreshScoreFlag
 	global behaviors
 
 	while True:
@@ -236,9 +238,9 @@ def main():
 
 		if (resynchTime == 0 and resynchFlag):
 			resynch()
-			resynchFlag=False
+			resynchFlag = False
 		elif(resynchTime != 0 and not resynchFlag):
-			resynchFlag=True
+			resynchFlag = True
 
 		if (refreshScoreTime == 0 and refreshScoreFlag):
 			fetchScore()
@@ -249,7 +251,7 @@ def main():
 
 		if (cycleTime == 0 and updateFlag):
 		 	updateBehaviors()
-			updateFlag=False
+			updateFlag = False
 		elif (cycleTime != 0 and not updateFlag):
 			updateFlag=True
 
