@@ -4,7 +4,6 @@ from fileHandlers import *
 from timingHandlers import *
 from behaviorHandlers import *
 from gpioHandlers import *
-import time
 import signal
 import os
 import pigpio # using this for hardware PWM, software is not stable!!!
