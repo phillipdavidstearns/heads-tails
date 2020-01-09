@@ -236,8 +236,6 @@ def main():
 			behaviorList=makeBehaviorList(behaviors)
 			for c in range(CHANNELS):
 				behavior = behaviors[behaviorList[c]]
-				print(behavior)
-				exit()
 				timings=generateTimings(behavior)
 				eventTimes[c]+=timings[0]
 				eventIndexes[c]+=timings[1]
