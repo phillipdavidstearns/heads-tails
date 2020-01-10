@@ -3,7 +3,7 @@ import csv
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 
-verbose = True
+verbose = False
 
 def printMsg(string):
 	if verbose:
@@ -117,8 +117,8 @@ def fetchDeviation(debug=False):
 		printMsg("[!] Couldn't update 'deviation.txt'")
 		pass
 	if ( update == 0 ):
-		os.system('mv ' + filename + ' ' + previous_filename)
-		os.system('mv ' +temp_filename+ ' ' +filename)
+		os.system( 'mv ' + filename + ' ' + previous_filename )
+		os.system( 'mv ' +temp_filename+ ' ' + filename )
 		printMsg("[+] 'deviation.txt' successfully retrieved")
 	else:
 		printMsg("[!] curl completed with a non-zero exit status")
