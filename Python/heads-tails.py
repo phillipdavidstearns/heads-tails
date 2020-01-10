@@ -132,7 +132,6 @@ def resynch():
 	global deviation
 	if fetchDeviation():
 		if deviationChanged():
-			print("Deviation has changed since last check. Updating.")
 			deviation = loadDeviation()
 			power_line_time=time.time()
 
@@ -244,9 +243,9 @@ def main():
 
 		currentTime = int(adjustedTime())
 
-		resynchTime = currentTime % 10 # 3600 triggers every hour
-		refreshScoreTime = currentTime  % 10 # 1800 triggers every 1/2 hour
-		refreshHeadlightTime = (currentTime - 3600)% 10 # 86400 should trigger at ~1AM
+		resynchTime = currentTime % 3600 # triggers every hour
+		refreshScoreTime = currentTime  % 1800 # triggers every 1/2 hour
+		refreshHeadlightTime = (currentTime - 3600) % 86400 # 86400 should trigger at ~1AM
 		cycleTime = currentTime % 90
 
 		if(refreshHeadlightTime == 0 and headlightFlag):
