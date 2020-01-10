@@ -1,4 +1,3 @@
-from globalVars import *
 import os
 import csv
 
