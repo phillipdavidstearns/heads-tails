@@ -27,6 +27,7 @@ eventIndexes=[]
 updateFlag=True
 resynchFlag=True
 refreshScoreFlag=True
+headlightFlag=True
 
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 
@@ -215,9 +216,12 @@ def main():
 	global channelStates
 	global lastCycleTime
 	global power_line_time
+	
 	global updateFlag
 	global resynchFlag
 	global refreshScoreFlag
+	global headlightFlag
+
 	global behaviors
 
 	while True:
@@ -226,8 +230,10 @@ def main():
 
 		currentTime = int(adjustedTime())
 
-		resynchTime = currentTime % 30
-		refreshScoreTime = (currentTime + 1) % 30
+
+		resynchTime = currentTime % 3600 # triggers every hour
+		refreshScoreTime = currentTime  % 1800 # triggers every 1/2 hour
+		refreshHeadlightTime = (currentTime - 3600)% 86400 # should trigger at ~1AM
 		cycleTime = currentTime % 90
 
 		# localTime = time.localtime()
@@ -236,6 +242,12 @@ def main():
 		# 	+", plt: "+str(int(power_line_time))
 		# 	+", adj: "+str(currentTime)
 		# 	,end='\r')
+
+		if(refreshHeadlightTime == 0 and headlightFlag):
+			updateHeadlightTimes()
+			headlightFlag = False
+		elif(refreshHeadlightTime != 0 and not headlightFlag):
+			headlightFlag = True
 
 		if(resynchTime == 0 and resynchFlag):
 			resynch()
