@@ -227,15 +227,15 @@ def main():
 		currentTime = int(adjustedTime())
 
 		resynchTime = currentTime % 30
-		refreshScoreTime = currentTime + 1 % 30
+		refreshScoreTime = (currentTime + 1) % 30
 		cycleTime = currentTime % 90
 
-		localTime = time.localtime()
+		# localTime = time.localtime()
 
-		print(" cycle: "+str(cycleTime)
-			+", plt: "+str(int(power_line_time))
-			+", adj: "+str(currentTime)
-			,end='\r')
+		# print(" cycle: "+str(cycleTime)
+		# 	+", plt: "+str(int(power_line_time))
+		# 	+", adj: "+str(currentTime)
+		# 	,end='\r')
 
 		if(resynchTime == 0 and resynchFlag):
 			resynch()
