@@ -13,8 +13,6 @@ import time
 CHANNELS=32
 FPS = 30
 
-INCREMENT = 1/120.0
-
 tzOffset = -5 * 3600
 dotOffset = 11 # based on the start of Phase B @ 51 seconds in the cycle starting + 28 past midnight
 deviation = 0
@@ -29,29 +27,31 @@ resynchFlag=True
 refreshScoreFlag=True
 headlightFlag=True
 
-script_dir = os.path.split(os.path.realpath(__file__))[0]
-
-STR = 17
-DATA = 27
-CLK = 22
-GRID = 23
+#------------------------------------------------------------------------
+#	PWM
+#	Used to set the brightness of the headlights
+# 	***NOTE***
+#	pigpiod but be running / restarted prior to running this script
 
 PWM_PIN = 12
 PWM_FREQ = 14000 # frequency of PWM
 
-DIM = 0.15
-BRIGHT = 1.0
-
+# initializes pigpio
 PWM = pigpio.pi()
 
 if not PWM.connected:
 	exit()
 
-def adjustedTime():
-	return power_line_time + tzOffset + dotOffset + deviation
-
 #------------------------------------------------------------------------
-# RPi.GPIO
+#	RPi.GPIO
+#	Non-PWM IO
+
+# Shift register pings
+STR = 17
+DATA = 27
+CLK = 22
+# Interrupt pin for grid synch
+GRID = 23
 
 def initGPIO():
 	GPIO.setwarnings(False)
@@ -81,19 +81,28 @@ def regOutput(channels):
 	GPIO.output(STR, 0)
 	GPIO.output(DATA, 0)
 
+INCREMENT = 1/120.0 # each interrupt = 1/120th of a second in "grid-time"
+
 def incrementCounter(channel):
 	global power_line_time
 	power_line_time += INCREMENT
 
 #------------------------------------------------------------------------
+#	HEADLIGHTS
+#	updating of the actual headlight timetables is done using functions in fileHandlers.py
+#		* fetchHeadlights()
+#		* loadHeadlights()
 
+# Some global variables related to headlights
 headlightTimes=[ 26400, 60300 ] # default sunrise/sunset times
 headlightState=0 # 0 for dim 1 for bright
 lastHeadlightState=0 # 0 for dim 1 for bright
+DIM = 0.15
+BRIGHT = 1.0
 
+# fetch the current date and set headlight timings accordingly
 def updateHeadlightTimes():
 	date=str(time.localtime()[1])+'/'+str(time.localtime()[2])
-	
 	try: # if the date is accounted for, we good
 		global headlightTimes
 		dim = headlights[date][0].split(':')
@@ -103,56 +112,62 @@ def updateHeadlightTimes():
 	except: # otherwise we go with the defaults or last used
 		pass
 
+# check what time it is and dijust headlight brightnesss accordingly
 def updateHeadlights():
 	currentTime=int(adjustedTime())%86400
-	if ( currentTime >= headlightTimes[0] and  currentTime < headlightTimes[1] ):
+	if ( currentTime >= headlightTimes[0] and currentTime < headlightTimes[1] ):
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(DIM*1000000) ) # dim
 	else:
 		PWM.hardware_PWM(PWM_PIN, PWM_FREQ, int(BRIGHT*1000000) ) # bright
 
+#------------------------------------------------------------------------
+#	DEVIATION
+#	
+# 	* fetchDeviation()
+# 	* deviationChanged()
+# 	* loadDeviation()
+
 def resynch():
 	global power_line_time
 	global deviation
-	fetchDeviation()
-	deviation = loadDeviation()
-	power_line_time=time.time()
+	if fetchDeviation():
+		if deviationChanged():
+			print("Deviation has changed since last check. Updating.")
+			deviation = loadDeviation()
+			power_line_time=time.time()
+
+#------------------------------------------------------------------------
+# TIMING
+
+# Provides a reading of time that should be synched to the grid
+def adjustedTime():
+	return power_line_time + tzOffset + dotOffset + deviation
 
 #------------------------------------------------------------------------
 
-def setLightOn(channel):
-	global channelStates
-	channelStates[channel] = 1
-
-def setLightOff(channel):
-	global channelStates
-	channelStates[channel] = 0
-
-def updateBehaviors():
+def updateBehaviors(behaviors):
 	global eventTimes
 	global eventIndexes
-	global behaviors
 	behaviorList=makeBehaviorList(behaviors)
 	for c in range(CHANNELS):
 		behavior = behaviors[behaviorList[c]]
-		timings=generateTimings(behavior)
+		timings = generateTimings(behavior)
 		eventTimes[c]+=timings[0]
 		eventIndexes[c]+=timings[1]
 
 def updateOutput():
 	global eventTimes
 	global eventIndexes
+	global channelStates
 	for c in range(CHANNELS):
 		if eventTimes[c]:
 			if (adjustedTime() > eventTimes[c][0]):
-				# if (eventIndexes[c][0] == 1):
 				channelStates[c]=eventIndexes[c][0]
-				# elif (eventIndexes[c][0] == 0):
-				# 	setLightOff(c)
-				# remove the event from queue
 				eventIndexes[c]=eventIndexes[c][1:]
 				eventTimes[c]=eventTimes[c][1:]
 				if (len(eventTimes[c])==0):
 					channelStates[c]=0
+	return channelStates
 
 def generateTimings(behavior):
 	times=[]
@@ -207,7 +222,6 @@ def setup():
 	resynch()
 	updateHeadlightTimes()
 	headlights = loadHeadlights()
-	
 
 def main():
 
@@ -216,7 +230,7 @@ def main():
 	global channelStates
 	global lastCycleTime
 	global power_line_time
-	
+
 	global updateFlag
 	global resynchFlag
 	global refreshScoreFlag
@@ -230,18 +244,10 @@ def main():
 
 		currentTime = int(adjustedTime())
 
-
-		resynchTime = currentTime % 3600 # triggers every hour
-		refreshScoreTime = currentTime  % 1800 # triggers every 1/2 hour
-		refreshHeadlightTime = (currentTime - 3600)% 86400 # should trigger at ~1AM
+		resynchTime = currentTime % 10 # 3600 triggers every hour
+		refreshScoreTime = currentTime  % 10 # 1800 triggers every 1/2 hour
+		refreshHeadlightTime = (currentTime - 3600)% 10 # 86400 should trigger at ~1AM
 		cycleTime = currentTime % 90
-
-		# localTime = time.localtime()
-
-		# print(" cycle: "+str(cycleTime)
-		# 	+", plt: "+str(int(power_line_time))
-		# 	+", adj: "+str(currentTime)
-		# 	,end='\r')
 
 		if(refreshHeadlightTime == 0 and headlightFlag):
 			updateHeadlightTimes()
@@ -256,21 +262,19 @@ def main():
 			resynchFlag = True
 
 		if(refreshScoreTime == 0 and refreshScoreFlag):
-			fetchScore()
-			behaviors = loadScore()
+			if fetchScore():
+				behaviors = loadScore()
 			refreshScoreFlag = False
 		elif(refreshScoreTime != 0 and not refreshScoreFlag):
 			refreshScoreFlag = True
 
 		if(cycleTime == 0 and updateFlag):
-			updateBehaviors()
+			updateBehaviors(behaviors)
 			updateFlag = False
 		elif(cycleTime != 0 and not updateFlag):
 			updateFlag=True
 
-		updateOutput()
-
-		regOutput(channelStates)
+		regOutput(updateOutput())
 
 		time.sleep(1/FPS)
 
