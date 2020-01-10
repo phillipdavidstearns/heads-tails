@@ -11,16 +11,16 @@ def fetchHeadlights():
 	update = -1
 
 	try:
-		print("[*] Requesting 'headlights.csv' data from remote server")
+		# print("[*] Requesting 'headlights.csv' data from remote server")
 		update = os.system(cmd)
 	except:
-		print("[!] Couldn't update 'headlight.csv'")
+		# print("[!] Couldn't update 'headlight.csv'")
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
-		print("[+] 'headlights.csv' successfully retrieved")
+		# print("[+] 'headlights.csv' successfully retrieved")
 	else:
-		print("[!] curl completed with a non-zero exit status")
+		# print("[!] curl completed with a non-zero exit status")
 		os.system('rm '+temp_filename+' 2>/dev/null')
 	return update
 
@@ -45,16 +45,16 @@ def fetchScore():
 	update = -1
 
 	try:
-		print("[*] Requesting 'score.csv' data from remote server")
+		# print("[*] Requesting 'score.csv' data from remote server")
 		update = os.system(cmd)
 	except:
-		print("[!] Couldn't update 'score.csv'")
+		# print("[!] Couldn't update 'score.csv'")
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
-		print("[+] 'score.csv' successfully retrieved")
+		# print("[+] 'score.csv' successfully retrieved")
 	else:
-		print("[!] curl completed with a non-zero exit status")
+		# print("[!] curl completed with a non-zero exit status")
 		os.system('rm '+temp_filename+' 2>/dev/null')
 	return update
 
@@ -97,16 +97,16 @@ def fetchDeviation(debug=False):
 	update = -1
 
 	try:
-		print("[*] Requesting 'deviation.txt' data from remote server")
+		# print("[*] Requesting 'deviation.txt' data from remote server")
 		update = os.system(cmd)
 	except:
-		print("[!] Couldn't update 'deviation.txt'")
+		# print("[!] Couldn't update 'deviation.txt'")
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
-		print("[+] 'deviation.txt' successfully retrieved")
+		# print("[+] 'deviation.txt' successfully retrieved")
 	else:
-		print("[!] curl completed with a non-zero exit status")
+		# print("[!] curl completed with a non-zero exit status")
 		os.system('rm '+temp_filename+' 2>/dev/null')
 	return update
 
