@@ -15,6 +15,7 @@ def fetchHeadlights():
 		update = os.system(cmd)
 	except:
 		# print("[!] Couldn't update 'headlight.csv'")
+		pass
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
@@ -49,6 +50,7 @@ def fetchScore():
 		update = os.system(cmd)
 	except:
 		# print("[!] Couldn't update 'score.csv'")
+		pass
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
@@ -101,6 +103,7 @@ def fetchDeviation(debug=False):
 		update = os.system(cmd)
 	except:
 		# print("[!] Couldn't update 'deviation.txt'")
+		pass
 
 	if ( update == 0 ):
 		os.system("mv "+temp_filename+" "+filename)
