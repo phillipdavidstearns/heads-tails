@@ -1,6 +1,8 @@
 import os
 import csv
 
+script_dir = os.path.split(os.path.realpath(__file__))[0]
+
 def fetchHeadlights():
 	temp_filename = '"' + script_dir + '/data/headlights_temp.csv' + '"'
 	filename = '"' + script_dir + '/data/headlights.csv' +  '"'
