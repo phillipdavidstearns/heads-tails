@@ -12,7 +12,7 @@ def interruptHandler(signal, frame):
 	os._exit(0)
 
 def main():
-	os._exit(updateHeadlights())
+	os._exit(fetchHeadlights())
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)

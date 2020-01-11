@@ -11,7 +11,7 @@ def interruptHandler(signal, frame):
 
 def main():
 
-	os._exit(updateDeviation())
+	os._exit(fetchDeviation())
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)

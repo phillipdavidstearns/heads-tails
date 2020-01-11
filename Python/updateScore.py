@@ -17,7 +17,7 @@ def interruptHandler(signal, frame):
 
 def main():
 
-	os._exit(updateScore())
+	os._exit(fetchScore())
 
 signal.signal(signal.SIGINT, interruptHandler)
 signal.signal(signal.SIGTERM, interruptHandler)

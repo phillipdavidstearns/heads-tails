@@ -7,10 +7,10 @@ Type=simple
 ExecStartPre=/bin/systemctl stop heads-tails-test
 ExecStartPre=/usr/bin/pigpiod
 ExecStart=/usr/bin/python3 /home/heads-tails/heads-tails/Python/heads-tails.py
-EcecStopPost=/usr/bin/python3 /home/heads-tails/heads-tails/clearRegisters.py
+ExecStopPost=/usr/bin/python3 /home/heads-tails/heads-tails/clearRegisters.py
 ExecStopPost=/usr/bin/killall pigpiod
-Restart=on-success
-RestartPreventExitStatus=SIGTERM SIGKILL
+ExecStopPost=/usr/bin/sleep 5
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
