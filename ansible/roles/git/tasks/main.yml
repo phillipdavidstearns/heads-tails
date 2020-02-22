@@ -1,7 +1,0 @@
----
-- name:
-  git:
-    clone: yes
-    update: yes
-    repo: 'git@github.com:phillipdavidstearns/heads-tails.git'
-    dest: /home/heads-tails/heads-tails
