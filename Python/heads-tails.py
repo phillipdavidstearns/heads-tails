@@ -94,7 +94,7 @@ def incrementCounter(channel):
 #		* loadHeadlights()
 
 # Some global variables related to headlights
-headlightTimes=[ 26400, 60300 ] # default sunrise/sunset times
+headlightTimes=[ 25200, 68400 ] # default sunrise/sunset times (7AM - 7PM)
 headlightState=0 # 0 for dim 1 for bright
 lastHeadlightState=0 # 0 for dim 1 for bright
 DIM = 0.15
