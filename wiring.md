@@ -1,6 +1,6 @@
 # Wiring of the Raspberry Pi
 
-A brief guide to wiring the Raspberry Pi 4 for Heads-Tails
+A brief guide to wiring the Raspberry Pi 4 for Heads-Tails with instructions for replacing.
 
 ## Pinouts
 
@@ -32,3 +32,17 @@ GPIO HEADER PIN		COLOR	DESCRIPTION		DESTINATION
 16					WHITE	INTERRUPT		ShiftRegisterBoard 1, ZERO CROSSING Terminal Block
 32					ORANGE	PWM				ShiftRegisterBoard 1, HEADLIGHT Terminal Block
 ```
+
+## Replacing the Raspberry Pi 4
+
+1. Power off the Raspberry Pi
+1. Remove the power cable and any other cables or dongles attached to the other ports
+1. Label the wires as above as you disconnect them
+1. Remove the Micro SD Card
+1. Remove the portion of the case covering the USB and ethernet ports
+1. Remove the Raspberry Pi
+1. Install the replacement Raspberry Pi
+1. Replace the portion of the case covering the USB and ethernet ports 
+1. Insert the SD card
+1. Reconnect the wiring as labelled according to the chart above
+1. Reconnect the power
