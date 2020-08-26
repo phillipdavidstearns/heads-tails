@@ -70,17 +70,17 @@ Don't have the credentials? Get in touch.
 1. On your host system, open a terminal and enter `ifconfig` to view the existing network interfaces.
 1. Connect the ethernet adapter to your host machine and run `ifconfig`. Make note of the name of the adapter's interface e.g. `en19` or `usb1` or `eth1`.
 1. Connect the ethernet cable to the host system and the Raspberry Pi
-1. If you already know the hostname of the Raspberry Pi, turn on the Raspberry Pi, wait a minute for the sstem to boot, then run `ping <hostname>.local`, replacing `<hostnname>` with that of the hostname of the Raspberry Pi. If you get a successful ping, then skip to Logging In.
+1. If you already know the hostname of the Raspberry Pi, turn on the Raspberry Pi, wait a minute for the sstem to boot, then run `ping <hostname>.local`, replacing `<hostnname>` with that of the hostname of the Raspberry Pi. If you get a successful ping, then skip to Logging In. 
 
 ```
-ping -c 5 heads-tails-cali.local
-PING heads-tails-cali.local (169.254.142.18): 56 data bytes
+ping -c 5 heads-tails-mulholland.local
+PING heads-tails-mulholland.local (169.254.142.18): 56 data bytes
 64 bytes from 169.254.142.18: icmp_seq=0 ttl=64 time=0.231 ms
 64 bytes from 169.254.142.18: icmp_seq=1 ttl=64 time=0.329 ms
 64 bytes from 169.254.142.18: icmp_seq=2 ttl=64 time=0.348 ms
 64 bytes from 169.254.142.18: icmp_seq=3 ttl=64 time=0.278 ms
 64 bytes from 169.254.142.18: icmp_seq=4 ttl=64 time=0.292 ms
---- heads-tails-cali.local ping statistics ---
+--- heads-tails-mulholland.local ping statistics ---
 5 packets transmitted, 5 packets received, 0.0% packet loss
 round-trip min/avg/max/stddev = 0.231/0.296/0.348/0.041 ms
 ```
@@ -90,21 +90,21 @@ round-trip min/avg/max/stddev = 0.231/0.296/0.348/0.041 ms
 
 ```
 22:17:51.710308 IP 169.254.142.18 > igmp.mcast.net: igmp v3 report, 1 group record(s)
-22:17:51.965505 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0 [3q] [4n] ANY (QM)? 8.1.e.4.0.8.f.6.8.5.1.c.9.5.e.9.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. ANY (QM)? heads-tails-cali.local. ANY (QM)? 18.142.254.169.in-addr.arpa. (219)
+22:17:51.965505 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0 [3q] [4n] ANY (QM)? 8.1.e.4.0.8.f.6.8.5.1.c.9.5.e.9.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. ANY (QM)? heads-tails-mulholland.local. ANY (QM)? 18.142.254.169.in-addr.arpa. (219)
 22:17:52.011015 ARP, Request who-has 23-95-213-211-host.colocrossing.com tell 169.254.142.18, length 46
 22:17:52.069567 IP6 macbook-110.local.mdns > ff02::fb.mdns: 0*- [0q] 1/0/2 (Cache flush) AAAA fe80::32:49fb:1f50:9139 (106)
 22:17:52.070245 IP 169.254.142.18 > igmp.mcast.net: igmp v3 report, 1 group record(s)
-22:17:52.215170 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0 [3q] [4n] ANY (QM)? 8.1.e.4.0.8.f.6.8.5.1.c.9.5.e.9.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. ANY (QM)? heads-tails-cali.local. ANY (QM)? 18.142.254.169.in-addr.arpa. (219)
-22:17:52.465954 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0 [3q] [4n] ANY (QM)? 8.1.e.4.0.8.f.6.8.5.1.c.9.5.e.9.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. ANY (QM)? heads-tails-cali.local. ANY (QM)? 18.142.254.169.in-addr.arpa. (219)
-22:17:52.666873 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0*- [0q] 4/0/0 (Cache flush) PTR heads-tails-cali.local., (Cache flush) A 169.254.142.18, (Cache flush) PTR heads-tails-cali.local., (Cache flush) AAAA fe80::9e59:c158:6f80:4e18 (201)
+22:17:52.215170 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0 [3q] [4n] ANY (QM)? 8.1.e.4.0.8.f.6.8.5.1.c.9.5.e.9.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. ANY (QM)? heads-tails-mulholland.local. ANY (QM)? 18.142.254.169.in-addr.arpa. (219)
+22:17:52.465954 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0 [3q] [4n] ANY (QM)? 8.1.e.4.0.8.f.6.8.5.1.c.9.5.e.9.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. ANY (QM)? heads-tails-mulholland.local. ANY (QM)? 18.142.254.169.in-addr.arpa. (219)
+22:17:52.666873 IP 169.254.142.18.mdns > 224.0.0.251.mdns: 0*- [0q] 4/0/0 (Cache flush) PTR heads-tails-mulholland.local., (Cache flush) A 169.254.142.18, (Cache flush) PTR heads-tails-mulholland.local., (Cache flush) AAAA fe80::9e59:c158:6f80:4e18 (201)
 ```
-The example output above indicates that our Raspberry Pi is located at IP address `169.254.142.18`.
+The example output above indicates that our Raspberry Pi is located at IP address `169.254.142.18`. Your results *will* differ.
 
 ### Loggin In
 
-1. ssh into the Raspberry Pi by running `ssh <user>@<ip_address>`, replacing `<user>` with the Raspberry Pi username and `<ip_address>` with either the hostname.local or the IP address obtained in the previous set of instructions.
-1. Accept the host ssh key by entering `yes`
-1. Enter the password for the Raspberry Pi user
+1. ssh into the Raspberry Pi by running `ssh <user>@<ip_address>`, replacing `<user>` with the Raspberry Pi username (ask the admin) and `<ip_address>` with either the hostname.local or the IP address obtained in the previous set of instructions.
+1. Accept the host ssh signature by entering `yes`
+1. Enter the password for the Raspberry Pi user that you obtained from the admin.
 
 ## Configuring WiFi
 
