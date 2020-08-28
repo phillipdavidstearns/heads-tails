@@ -10,3 +10,4 @@ Python code to run lighting control on a Raspberry Pi 4
 
 * [How to connect to the Raspberry Pi 4](./connecting.md)
 * [Raspberry Pi 4 Wiring](./wiring.md)
+* [Troubleshooting](./troubleshoot.md)
