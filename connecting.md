@@ -1,11 +1,24 @@
 # Connecting
 
+
+This guide covers different methods for connecting to and configuring WiFi settings on the Raspberry Pi for Heads-Tails for further administration locally and remotely.
+
+
+## Overview
+
+Configuration of the WiFi settings is done using `nano` to edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file. This guide assumes that the Raspberry Pi has not been preconfigured to connect to your local WiFi network.
+
 There are two options for connecting to the Raspberry Pi 4 running Heads-Tails:
 
 1. From the console via keyboard and mouse (easy)
 1. Direct Ethernet Connection (advanced)
 
-This guide will cover both as well as how to setup the Pi to connect to your local Wifi network for additional remote access and management.
+Once configured, connect over WiFi to manage other aspects of the Raspberry Pi:
+
+* Check services
+* Pull updates from GitHub
+
+
 
 ## Login from the Console
 
@@ -127,3 +140,47 @@ network={
 1. Wait for the Pi to reboot. Now log back in and enter the following command: `ip a`
 
 You should see the `wlan0` interface is assigned an ip address, generally something like 192.168.1.123. If there’s no IP address assign to the wlan0 device, then the configuration failed. Double check the `ssid` and `password`
+
+## Remote Management over WiFi
+
+Once you can confirm the Raspberry Pi is connected to your local WiFi network, you can login over `ssh` from a machine connected to that same network. A caveat is that some guest networks may implement host isolation, which means that devices one the guest network will not be able to communicate with one another. This is a setting that can be changed by the admin of the WiFi network.
+
+1. Connect to the same WiFi network as the Raspberry Pi
+1. Open a terminal on your host machine.
+1. Attempt to locate the RPi: `ping heads-tails-mulholland.local`
+1. If you're able to get a response, then attempt to login: `ssh heads-tails@heads-tails-mulholland.local`
+1. Enter the password and you should get a greeting banner and shell.
+
+### Managing Services
+
+The main Heads-Tails program runs as a service managed by `systemd`, located at `/lib/systemd/system/heads-tails-lite.service`. This service depends on the `pigpiod.service` also located in `/lib/systemd/system/`. By default these are enabled in order to start on boot. A third service, `wg-quick@wg0.service`, is the VPN service for remote administration.
+
+* To check the status of the services run: `systemctl status heads-tails-lite pigpiod wg-quick@wg0`
+* You should see that they are active. See below for an example of the `wg-quick@wg0` service output:
+
+```
+heads-tails@heads-tails-mulholland:~$ systemctl status wg-quick@wg0.service 
+● wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
+   Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; vendor preset: enabled)
+   Active: active (exited) since Fri 2020-08-21 08:03:54 EDT; 6 days ago
+     Docs: man:wg-quick(8)
+           man:wg(8)
+           https://www.wireguard.com/
+           https://www.wireguard.com/quickstart/
+           https://git.zx2c4.com/WireGuard/about/src/tools/man/wg-quick.8
+           https://git.zx2c4.com/WireGuard/about/src/tools/man/wg.8
+  Process: 23546 ExecStart=/usr/bin/wg-quick up wg0 (code=exited, status=0/SUCCESS)
+ Main PID: 23546 (code=exited, status=0/SUCCESS)
+```
+
+* If the services are either inactive, terminated, or otherwise "dead", they can be started using: `sudo systemctl start <name of the dead service>`
+* Stop: `sudo systemctl stop <name of service>`
+* Disable (prevent loading on boot): `sudo systemctl disable <name of service>`
+* Enable (activate loading on boot): `sudo systemctl enable <name of service>`
+
+### Updating Code
+
+* The code base is published on [GitHub](https://github.com/phillipdavidstearns/heads-tails-lite).
+* It's been cloned locally to `/home/heads-tails/heads-tails-lite`
+* Change to the directory: `cd /home/heads-tails/heads-tails-lite`
+* To pull in recent updates: `git pull`
